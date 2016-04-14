@@ -3,6 +3,8 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 
+\widowpenalties 1 10000
+\raggedbottom
 
 %Instructions to compile with bibliography:
 %1. pdflatex writing3sample
@@ -13,7 +15,8 @@
 \title{Adversarial search of Monte-Carlo simulation for 3D Tic-Tac-Toe}
 
 \author{
-Kohei Kawasaki\\kawas009@umn.edu
+Kohei Kawasaki\\kawas009@umn.edu\\
+Carlo Hernandez\\herna463@umn.edu
 }
 \date{\today}
 
@@ -21,7 +24,8 @@ Kohei Kawasaki\\kawas009@umn.edu
 \maketitle
 
 \section{Team}
-This is solo project. 
+Kohei Kawasaki\\
+Carlo Hernandez
 \label{sec:rw}
 \section{Brief Description of problem}
 As the game is getting more complex and deeper strategically, the heuristic function and cost function is getting useless due to absence of absolute evaluation of current state and forward step. That node will be expanded exponentially and it could be said impossible to use \(A*\) search or \(IDA*\) since both algorithms depends on the validity of evaluation function and strategically complexity causes evaluating a each move to difficult. In alpha-beta pruning, if we put bounds on the possible values of the utility function, the nwe can arrive at bounds for the average without looking at every number.
@@ -37,7 +41,17 @@ In OLEG(second version of their program), {an eye is an empty intersection surro
 
 
 \section{Approach}
-In this project, aiming creating strong AI and applicable to as bigger as possible length. First things first, write a code to 3D tic-tac-toe first by C++ and visualise by python because evaluating dominance of game can be simply easier. And the first programming just simply statically analyse the probability of each step in a set of test\cite{abramson1990expected}. The second attempt is to implement learning system from the sample, by a first thousands of sample, simply pruning the move which is less likely to win\cite{brugmann1993monte}. Third if I could, in some strategy, adding pruning system by partially KB. However, the side length is getting bigger, to running all the possibility of move is getting useless and taking more and more time\cite{bouzy2004monte}. In order to apply the bigger game, I need a dominance evaluation in the near future step. Without running a full game, in a set of depth, evaluate the dominance and returning the probability, that kind of system is needed. Or detaching current hot game zone and simulate separately or weight probability of its zone seems works fine as well. If I could spare time to work on it, I would implement the dominance evaluation and weight the probability for some move. 
+In this project, aiming creating strong AI and applicable to as bigger as possible length. First things first, write a code to 3D tic-tac-toe first by C++ and visualise by python because evaluating dominance of game can be simply easier. Then five versions of monte carlo simulation are implemeted as follows.
+
+The first implementation just simply statically analyse the probability of each step in a set of test\cite{abramson1990expected}. 
+
+The second implemetation applies a learning system from the sample, by a first thousands of sample, simply pruning the moves which is less likely to win\cite{brugmann1993monte}.
+
+The third implementation applies the same learning sytem, but instead of pruning branches away, the distribution of picking new moves within the next 1000 simulations will be adjusted to match the distribution of the last 1000 simulations. This means that if a move had a high win rate in the last 1000 simulations, this move will be more likely to be picked in the next 1000 simulations.
+
+Fourth if I could, in some strategy, adding pruning system by partially KB. However, the side length is getting bigger, to running all the possibility of move is getting useless and taking more and more time\cite{bouzy2004monte}. In order to apply the bigger game, I need a dominance evaluation in the near future step. Without running a full game, in a set of depth, evaluate the dominance and returning the probability, that kind of system is needed. Or detaching current hot game zone and simulate separately or weight probability of its zone seems works fine as well. If I could spare time to work on it, I would implement the dominance evaluation and weight the probability for some move. 
+
+The fifth implemetation would be a full monte carlo simulation that favors the use of lookup tables.This will be implemented such that for each simulation, for each move, there is a chance P to randomly pick a move, or use the current simulation state to look up an existing favorable move. When there is no move that can be found in the table, the implementation reverts to randomly choosing a move within that simulation. This allows each simulation to finish faster by giving it a chance to pick historically advatagous moves in the early game, leaving the rest of the monte carlo simulation with less depth to simulate with. The chance P can be adjusted to change the rate at which the lookup table is referenced, where the optimal is that it is referenced often in the early game, and is less referenced as time goes on.
 
 \section{Implementation of experiment} 
 I will take an opponent to my AI program and I will move as hostile as possible to take in order to find out the pitfall of my program. Moreover, I would take a match as far as it doesn't crash so that I can find out the boundary of NP problem.
@@ -62,7 +76,9 @@ Each version's description is written in Approach section. As for test case, in 
 \item To write a code for game of 3D tic-tac-toe and visualise it by 3D model(15hours)
 \item Implement first version of Monte-Carlo simulation(5hours)
 \item Implement second version (15hours)
-\item (optional)Implement third version (15hours)
+\item Implement third version (15hours)
+\item (optional)Implement fourth version (15hours)
+\item Implement the fifth version (15hours)
 \item Run Test case, (10 hours)
 \item Analizing and writing a final project.(5 hours) 
 \end{itemize}
@@ -72,8 +88,11 @@ Each version's description is written in Approach section. As for test case, in 
 
 
 
-\bibliography{/Users/koheikawasaki/Desktop/4511W/writing/project/ref}
+%\bibliography{/Users/koheikawasaki/Desktop/4511W/writing/project/ref}
+\bibliography{ref}{}
 \bibliographystyle{plain}
+
+
 
 \end{document}
 
