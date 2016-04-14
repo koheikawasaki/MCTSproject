@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{mathtools}
+
+
+%Instructions to compile with bibliography:
+%1. pdflatex writing3sample
+%2. bibtex writing3sample
+%3. pdflatex writing3sample
+%4. pdflatex writing3sample
+
+\title{Adversarial search of Monte-Carlo simulation for 3D Tic-Tac-Toe}
+
+\author{
+Kohei Kawasaki\\kawas009@umn.edu
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Team}
+This is solo project. 
+\label{sec:rw}
+\section{Brief Description of problem}
+As the game is getting more complex and deeper strategically, the heuristic function and cost function is getting useless due to absence of absolute evaluation of current state and forward step. That node will be expanded exponentially and it could be said impossible to use \(A*\) search or \(IDA*\) since both algorithms depends on the validity of evaluation function and strategically complexity causes evaluating a each move to difficult. In alpha-beta pruning, if we put bounds on the possible values of the utility function, the nwe can arrive at bounds for the average without looking at every number.
+Therefore Monte-Carlo simulation(Tree search) works an alternative evaluation of Alpah-Beta prunning or other search algorithm. From a start position the algorithm play thousands of games against itself, using randomly chosen move and evaluate each note by the statical win percentage. In this project, I am going to work on 3D tic-tac-toe from the approach of monte carlo tree search. 3D tic-tac-toe is the three dimensional version of commonly played board game. The strategy of game expanded due the expansion of dimension. Assume N as the length of each side, the size of the board game \(N^3\). Thus the maximum tree size is the\(N^3!\). In terms only size of board game, from 5 side length, it is over the game of go. However because of the simplicity of the game rule, its branching factor still is inferior to game of go. For the similarity of game, I implement algorithm, which is commonly used Go, to 3D tic-tac-toe.
+
+\section{Related works}
+The first Monte-Carlo simulation appeared on early 1990. B. Abramson developed (expected-outcome) model which returns expected value of the game?s outcome\cite{abramson1990expected}. A standard model of static evaluators is Min-Max tree search. For the difficulty of setting of evaluation, however, the design is viewed as impossible. Moreover, it was too difficult to evaluate the accuracy due to the absence of standard evaluation to grasp a strategy in the entire game.  At the bottom line, Abramson tired to make a heuristic from the statical evaluation of random game plays. Due to limitation of computer architecture at those days, the test was operated 6x6 Othello. By running a program in a tons of random game, from its value, the player make a decision. 
+
+B. Brugmann implemented simulated annealing to the Monte Carlo simulation as their project GOBBLE\cite{brugmann1993monte}. At the first glance because of the difference between traveling salesman problem and tree search Game like Go however, the two competing parties playing the game in hostile way and have to optimise two sequences of moves. It seemed simulated annealing cannot be to find local variable due to the discontinuous function of the list of moves. As one of possible solution, through the simulation of random games, algorithm itself is learned. And here is the 2 point of improvement. 
+
+Boozy and Helmstetter developed two Go programs based on same basic idea\cite{bouzy2004monte}. That derives from their two hypothesis. First if it is possible to terminate search process of game, the process provides the best move and this process does not necessarily need domain dependent knowledge, however, its cost is exponential by the search depth. Second, knowledge-based go programs seemed impossible to improve. Thus, their paper explored a hybrid solution of these two idea, which is little knowledge based. As an domain-dependent knowledge part, they defined of an {eye}, and in the {eye} random programs not to play. In OLGA (first version of their program), {an eye is an empty intersection surrounded by stones of one colour with two liberties or more.}
+In OLEG(second version of their program), {an eye is an empty intersection surrounded by stones belonging to the same string.} Both are different version of heuristic search in short. In their program Progressive Pruning is implemented, which is statistically poor moving is pruned immediately after a minimal number of random games(100 per move). For a evaluation, assumed mean value m, and a standard deviation \(\omega\)of each move, a left expected, \(m_{l} = m - \omega r_{d}\), a right expected \(m_{r} = m - {\omega} r_{d}\), and where \(r_{d}\) is a ratio fixed up by practical experiments. Next thing is evaluation of terminal position for a random game. There are two two ways to evaluate it,{for the first move of the game only}, or  {for all moves played in the as if they were the first to be played.} In their project latter one is implemented. The Advantage is the one random game helps evaluate almost all possible moves at the root, yet as a drawback, move order is ignored which is crucial to this game. 
+
+
+\section{Approach}
+In this project, aiming creating strong AI and applicable to as bigger as possible length. First things first, write a code to 3D tic-tac-toe first by C++ and visualise by python because evaluating dominance of game can be simply easier. And the first programming just simply statically analyse the probability of each step in a set of test\cite{abramson1990expected}. The second attempt is to implement learning system from the sample, by a first thousands of sample, simply pruning the move which is less likely to win\cite{brugmann1993monte}. Third if I could, in some strategy, adding pruning system by partially KB. However, the side length is getting bigger, to running all the possibility of move is getting useless and taking more and more time\cite{bouzy2004monte}. In order to apply the bigger game, I need a dominance evaluation in the near future step. Without running a full game, in a set of depth, evaluate the dominance and returning the probability, that kind of system is needed. Or detaching current hot game zone and simulate separately or weight probability of its zone seems works fine as well. If I could spare time to work on it, I would implement the dominance evaluation and weight the probability for some move. 
+
+\section{Implementation of experiment} 
+I will take an opponent to my AI program and I will move as hostile as possible to take in order to find out the pitfall of my program. Moreover, I would take a match as far as it doesn't crash so that I can find out the boundary of NP problem.
+% Also I would make my program to fight each other and see the expansion of Node and runtime and see if which one wins.
+\subsection{Aim of test case}
+Here is the list of things I needed clarify
+\begin{enumerate}
+\item In each version, 2 test match by myself. And expand the side length from 3 until it crashes.
+\begin{enumerate}
+\item To find out the typical move or traits for each algorithm.
+\item To measure total match time and Average move time.
+\item Min, Max average and standard deviation of expanded node for each move.
+\item To find out each probability difference and find out the room to improve.
+\item Find out the maximum applicable side length. 
+\item Accuracy difference of the number of test case
+\end{enumerate}
+
+\end{enumerate}
+\section{Estimated timeline}
+Each version's description is written in Approach section. As for test case, in the previous related works, 9 masses of Game of Go takes two and half hours. So that it might take more 
+\begin{itemize} 
+\item To write a code for game of 3D tic-tac-toe and visualise it by 3D model(15hours)
+\item Implement first version of Monte-Carlo simulation(5hours)
+\item Implement second version (15hours)
+\item (optional)Implement third version (15hours)
+\item Run Test case, (10 hours)
+\item Analizing and writing a final project.(5 hours) 
+\end{itemize}
+
+
+
+
+
+
+\bibliography{/Users/koheikawasaki/Desktop/4511W/writing/project/ref}
+\bibliographystyle{plain}
+
+\end{document}
+
+
+
