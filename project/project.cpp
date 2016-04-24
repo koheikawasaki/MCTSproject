@@ -18,7 +18,7 @@ bool checkWINNER (int turn, int g, int r, int c);
 bool checkWINNERar (int turn, int g, int r, int c, int*** board);
 int normalizeINPUT (string inp);
 int*** copyBoard(int board[SIZE][SIZE][SIZE]);
-bool*** validBoard(int ***board);
+
 int* validOption(bool ***board,int len);
 bool*** validBoard(int ***board, int &count);
 int simulation(int ***board);
