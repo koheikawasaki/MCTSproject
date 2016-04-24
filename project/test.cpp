@@ -32,11 +32,68 @@ int main(){
   string inp;
   int g,r,c;
   resetARRAY();
-  int simTurn=0;
-  int gs, rs, cs;
   int*** board;
   board = copyBoard(adj);
-  cout << simulation(board);
+  //monteCarlo
+  int *grc;
+  grc = new int[3];
+  bool ***firstvalid;
+  int hashlen = 0;
+  //definitely hashlen must be initialized!!!
+  firstvalid = validBoard(board, hashlen);
+  cout << "hashlen: " << hashlen;
+  int *hash;
+  hash = validOption(firstvalid, hashlen);
+  //delete 3d array;
+  for(int i=0;i<SIZE;i++) {
+    for(int j=0;j<SIZE;j++) {
+      delete [] firstvalid[i][j];
+    }
+    delete [] firstvalid[i];
+  }
+  delete [] firstvalid;
+  
+  int *probarray;
+
+  probarray = new int[hashlen];
+  for(int i=0; i<hashlen; i++){
+    //tempboardをもう一回つくる
+    int ***temp;
+    temp = copyBoard(adj);
+    probarray[i] = 0;
+    int sum =0;
+    int fg, fr, fc;
+    fg = hash[i]/ 100;
+    fr = (hash[i] %100) /10;
+    fc = hash[i] %10;
+    //tempboardに上３っつを反映して勝ち負けチェック
+    //cout << i << ": " <<fg << fr << fc << endl;
+    temp[fg][fr][fc] = 2;
+    for(int j=0; j<30; j++) {
+      sum += simulation(temp);
+    }
+    probarray[i] = sum;
+    cout << i << "sum: " << sum << endl;
+    for(int a=0;a<SIZE;a++) {
+      for(int b=0;b<SIZE;b++) {
+	delete [] temp[a][b];
+      }
+      delete [] temp[a];
+    }
+    delete [] temp;
+  }
+  int maxp = 0;
+  for(int i=0; i<hashlen; i++) {
+    if(maxp < probarray[i]) {
+      maxp = hash[i];
+    }
+  }
+  delete [] hash;
+  delete [] probarray;
+  grc[0] = maxp/ 100;
+  grc[1] = (maxp %100) /10;
+  grc[2] = maxp %10;
+  cout << grc[0] << grc[1] << grc[2] << endl;
   return 0;
 }
 bool checkWINNERar (int turn, int g, int r, int c, int*** board)
@@ -350,26 +407,28 @@ int simulation(int ***board)
   int simTurn=0;
   int gs, rs, cs;
   while(true){
+
     simTurn++;
     bool ***valid;
     int len = 0;
     int self = whosturn(simTurn);
     valid = validBoard(board,len);
-    cout << "len: " << len << endl;
+    //cout << "len: " << len << endl;
     if(len==0){
-      cout << "No choice" << endl;
+      //cout << "No choice" << endl;
+      //cout << "break" << endl;
       break;
     }
     int *option;
     option = validOption(valid, len);
     int pick = rand() % len;
-    cout << "pick " << pick << endl;
-    cout << "option " << option[pick] << endl;
+    //cout << "pick " << pick << endl;
+    //cout << "option " << option[pick] << endl;
     
     gs = option[pick]/ 100;
     rs = (option[pick] %100) /10;
     cs = option[pick] %10;
-    cout << gs << rs << cs << endl;
+    //cout << gs << rs << cs << endl;
     if(adj[gs][rs][cs]!=0){
       cout << "\nPlease select an unoccupied square!\n\n";
       turn--;
@@ -379,7 +438,7 @@ int simulation(int ***board)
     else{board[gs][rs][cs] = 1;}
     
     if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
-    display(board);
+    //display(board);
     //delete zone
     for(int i=0;i<SIZE;i++) {
       for(int j=0;j<SIZE;j++) {
@@ -392,11 +451,11 @@ int simulation(int ***board)
   }
   if(!checkWINNERar(simTurn, gs, rs, cs, board)) return 0;
   else if(simTurn % 2 == 0){
-    cout << 1 << endl;
+    //cout << 1 << endl;
     return 1;
   }
   else {
-    cout << -1 << endl;
+    //cout << -1 << endl;
     return -1;
   }
   
