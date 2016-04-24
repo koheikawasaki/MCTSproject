@@ -12,6 +12,7 @@ const int WINCONDITION = 3;
 int turn, adj[SIZE][SIZE][SIZE];
 
 void display (int *brd);
+void display (int ***brd);
 bool displayWINNER (int turn);
 void resetARRAY ();
 bool checkWINNER (int turn, int g, int r, int c);
@@ -61,11 +62,11 @@ int main(){
       turn--;
       continue;
     }
-    if(turn%2==0){board[gs][rs][cs] = 2;}
+    if(simTurn%2==0){board[gs][rs][cs] = 2;}
     else{board[gs][rs][cs] = 1;}
     
     if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
-
+    display(board);
     //delete zone
     for(int i=0;i<SIZE;i++) {
       for(int j=0;j<SIZE;j++) {
@@ -146,7 +147,7 @@ bool checkWINNERar (int turn, int g, int r, int c, int*** board)
                       ct++;
                       }
                }
-               if (ct>WINCONDITION) {return true;}
+               if (ct>=WINCONDITION) {return true;}
                }
      return false;
 }
@@ -218,13 +219,48 @@ bool checkWINNER (int turn,int g,int r,int c) {
                       ct++;
                       }
                }
-               if (ct>WINCONDITION) {for (int b=0;b<4;b++) {adj[x[b]][y[b]][z[b]]= -1;} return 1;}
+               if (ct>=WINCONDITION) {for (int b=0;b<4;b++) {adj[x[b]][y[b]][z[b]]= -1;} return 1;}
                }
      return 0;
 }
 
 
-
+void display (int ***board)
+{
+  int range = sideLength * 2;
+  for(int i = 1;i <= sideLength;i++)
+    {
+      cout << "#" << i << "\t\t";
+      if (i == sideLength) cout <<"\n\n\n";
+    }
+  int n;
+  for(int y=1;y<1+sideLength;y++) {
+    for(int x=1;x<1+sideLength;x++){
+      for(int z=1;z<1+sideLength;z++){
+      	switch (board[x][y][z]) {
+      	case 0: cout << " ";break;
+      	case 1: cout << "X";break;
+      	case 2: cout << "O";break;
+      	case -1: cout << "t";break;
+      	}
+  
+      	if(z<sideLength) {cout << "|";}
+      }
+      if(x<sideLength) cout << "\t\t";
+    }
+    if(y<sideLength) {
+      cout << "\n";
+      for(int m=1; m<sideLength * range;m++) {
+	if(m%range == 0) {cout <<"\t\t";}
+	else if(m%2==0) {cout << "+";}
+	else cout << "-";
+      }
+      cout <<"\n";
+    }
+  }
+  cout << "\n\n";
+  return;
+}
 void display(int *brd)
 {
   int range = sideLength * 2;
