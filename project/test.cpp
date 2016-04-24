@@ -513,7 +513,7 @@ int* monteCarlo(int ***board)
       sum += simulation(temp);
     }
     probarray[i] = sum;
-    cout << i << "sum: " << setw(4) << sum << setw(6) <<hash[i] << endl;
+    cout << setw(3)<< i << "sum: " << setw(4) << probarray[i] << setw(6) <<hash[i] << endl;
     for(int a=0;a<SIZE;a++) {
       for(int b=0;b<SIZE;b++) {
 	delete [] temp[a][b];
@@ -523,16 +523,20 @@ int* monteCarlo(int ***board)
     delete [] temp;
   }
   int maxp = 0;
+  int maxi = 0;
   for(int i=0; i<hashlen; i++) {
     if(maxp < probarray[i]) {
-      maxp = hash[i];
+      maxp = probarray[i];
+      maxi = i;
     }
   }
+  cout << maxi << endl;
+  cout << hash[maxi] << endl;
   delete [] hash;
   delete [] probarray;
-  grc[0] = maxp/ 100;
-  grc[1] = (maxp %100) /10;
-  grc[2] = maxp %10;
+  grc[0] = hash[maxi]/ 100;
+  grc[1] = (hash[maxi] %100) /10;
+  grc[2] = hash[maxi] %10;
 
   return grc;
  

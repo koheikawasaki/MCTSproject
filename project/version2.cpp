@@ -6,7 +6,7 @@
 
 using namespace std;
 const int sideLength = 3;
-const int SampleN = 1000;
+const int SampleN = 5;
 const int SIZE = sideLength + 2;
 const int WALL = sideLength + 1;
 const int WINCONDITION = 3;
@@ -20,7 +20,7 @@ bool checkWINNER (int turn, int g, int r, int c);
 bool checkWINNERar (int turn, int g, int r, int c, int*** board);
 int normalizeINPUT (string inp);
 int*** copyBoard(int board[SIZE][SIZE][SIZE]);
-
+int*** copyBoard(int ***board);
 int* validOption(bool ***board,int len);
 bool*** validBoard(int ***board, int &count);
 int simulation(int ***board);
@@ -29,10 +29,15 @@ int simulation(int ***board);
 int whosturn(int turn);
 //from above 10 needs hash function
 
-bool is_checkmate(int currentTurn, int ***board, int g, int r, int c);
-bool is_checkmate(int currentTurn, int ***board, int g, int r, int c)
+bool is_Lcheckmate(int currentTurn, int ***board, int g, int r, int c);
+bool is_Wcheckmate(int currentTurn, int ***board, int g, int r, int c);
+bool is_Lcheckmate(int currentTurn, int ***board, int g, int r, int c)
 {
   return checkWINNERar(currentTurn+1,g,r,c,board);
+}
+bool is_Wcheckmate(int currentTurn, int ***board, int g, int r, int c)
+{
+  return checkWINNERar(currentTurn,g,r,c,board);
 }
 int main(){
   srand (time(NULL));
@@ -378,6 +383,21 @@ int*** copyBoard(int board[SIZE][SIZE][SIZE])
     }
   return array3D;
 }
+int*** copyBoard(int ***board)
+{
+  int*** array3D;
+  array3D = new int**[SIZE];
+  for(int i=0;i<SIZE;i++) {
+    array3D[i] = new int*[SIZE];
+    for(int j=0;j<SIZE;j++) {
+      array3D[i][j] = new int[SIZE];
+      for(int k=0;k<SIZE;k++) {
+	array3D[i][j][k] = board[i][j][k];
+	}
+      }
+    }
+  return array3D;
+}
 bool*** validBoard(int ***board, int &count)
 {
   bool*** array3D;
@@ -433,22 +453,22 @@ int simulation(int ***board)
     int len = 0;
     int self = whosturn(simTurn);
     valid = validBoard(board,len);
-    //cout << "len: " << len << endl;
+    cout << "len: " << len << endl;
     if(len==0){
-      //cout << "No choice" << endl;
+      cout << "No choice" << endl;
       //cout << "break" << endl;
       break;
     }
     int *option;
     option = validOption(valid, len);
     int pick = rand() % len;
-    //cout << "pick " << pick << endl;
-    //cout << "option " << option[pick] << endl;
+    cout << "pick " << pick << endl;
+    cout << "option " << option[pick] << endl;
     
     gs = option[pick]/ 100;
     rs = (option[pick] %100) /10;
     cs = option[pick] %10;
-    //cout << gs << rs << cs << endl;
+    cout << gs << rs << cs << endl;
     if(adj[gs][rs][cs]!=0){
       cout << "\nPlease select an unoccupied square!\n\n";
       turn--;
@@ -458,7 +478,7 @@ int simulation(int ***board)
     else{board[gs][rs][cs] = 1;}
     
     if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
-    //display(board);
+    display(board);
     //delete zone
     for(int i=0;i<SIZE;i++) {
       for(int j=0;j<SIZE;j++) {
@@ -501,9 +521,10 @@ int* monteCarlo(int ***board)
   delete [] firstvalid;
   
   int *probarray;
-
+  bool Lmarker = false, Wmarker = false;
   probarray = new int[hashlen];
   for(int i=0; i<hashlen; i++){
+    cout << i << "_______________ New _____________ \n\n\n\n\n" << endl; 
     //tempboardをもう一回つくる
     int ***temp;
     temp = copyBoard(adj);
@@ -513,19 +534,57 @@ int* monteCarlo(int ***board)
     fg = hash[i]/ 100;
     fr = (hash[i] %100) /10;
     fc = hash[i] %10;
+    int Lfg, Lfr, Lfc, Wfg, Wfr, Wfc;
     //tempboardに上３っつを反映して勝ち負けチェック
-    //cout << i << ": " <<fg << fr << fc << endl;
-    temp[fg][fr][fc] = 2;
-    //これは違う　プレーヤーが勝つかどうかの判定が欲しい
-    if(checkWINNERar(2, fg, fr, fc, temp))
+    if(is_Lcheckmate(turn, temp, fg, fr, fc))
       {
-	grc[0] = fg;
-	grc[1] = fr;
-	grc[2] = fc;
+	Lmarker = true;
+	Lfg = fg, Lfr = fr, Lfc = fc;
+      }
+    if(is_Wcheckmate(turn, temp, fg, fr, fc))
+      {
+	Wmarker = true;
+	Wfg = fg, Wfr = fr, Wfc = fc;
+      }
+    if(i==hashlen-1){
+      if(Lmarker){
+	grc[0] = Lfg;
+	grc[1] = Lfr;
+	grc[2] = Lfc;
+      }
+      if(Wmarker){
+	grc[0] = Wfg;
+	grc[1] = Wfr;
+	grc[2] = Wfc;
+      }
+      if(Wmarker||Lmarker){
+      //deletepart
+	for(int a=0;a<SIZE;a++) {
+	  for(int b=0;b<SIZE;b++) {
+	    delete [] temp[a][b];
+	  }
+	  delete [] temp[a];
+	}
+	delete [] temp;
+	//deletepart
 	return grc;
       }
+    }
+	
+    //cout << i << ": " <<fg << fr << fc << endl;
+    temp[fg][fr][fc] = 2;
     for(int j=0; j<SampleN; j++) {
-      sum += simulation(temp);
+      int ***newtemp;
+      newtemp = copyBoard(temp);
+      sum += simulation(newtemp);
+      for(int a=0;a<SIZE;a++) {
+	for(int b=0;b<SIZE;b++) {
+	  delete [] temp[a][b];
+	}
+	delete [] temp[a];
+      }
+      delete [] temp;
+      //deletepart
     }
     probarray[i] = sum;
     cout << setw(3)<< i << "sum: " << setw(4) << probarray[i] << setw(6) <<hash[i] << endl;
@@ -556,5 +615,7 @@ int* monteCarlo(int ***board)
   return grc;
  
 }
+
+
 
     
