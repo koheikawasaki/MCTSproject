@@ -20,7 +20,7 @@ bool checkWINNER (int turn, int g, int r, int c);
 bool checkWINNERar (int turn, int g, int r, int c, int*** board);
 int normalizeINPUT (string inp);
 int*** copyBoard(int board[SIZE][SIZE][SIZE]);
-int*** copyBoard(int ***boardd);
+int*** copyBoard(int ***board);
 int* validOption(bool ***board,int len);
 bool*** validBoard(int ***board, int &count);
 int simulation(int ***board);
@@ -34,126 +34,33 @@ bool is_Wcheckmate(int currentTurn, int ***board, int g, int r, int c);
 
 
 int main(){
-  srand (time(NULL));
-  string inp;
-  int g,r,c;
   resetARRAY();
-  int*** board;
-  board = copyBoard(adj);
-  //monteCarlo
-  int *grc;
-  grc = new int[3];
-  bool ***firstvalid;
-  int hashlen = 0;
-  //definitely hashlen must be initialized!!!
-  firstvalid = validBoard(board, hashlen);
-  cout << "hashlen: " << hashlen;
-  int *hash;
-  hash = validOption(firstvalid, hashlen);
-  //delete 3d array;
-  for(int i=0;i<SIZE;i++) {
-    for(int j=0;j<SIZE;j++) {
-      delete [] firstvalid[i][j];
-    }
-    delete [] firstvalid[i];
-  }
-  delete [] firstvalid;
-  
-  int *probarray;
-  bool Lmarker = false, Wmarker = false;
-  probarray = new int[hashlen];
-  for(int i=0; i<hashlen; i++){
-    cout << i << "_______________ New _____________ \n\n\n\n\n" << endl; 
-    //tempboardをもう一回つくる
+  for(int i=0;i<3;i++) {
     int ***temp;
     temp = copyBoard(adj);
-    probarray[i] = 0;
-    int sum =0;
-    int fg, fr, fc;
-    fg = hash[i]/ 100;
-    fr = (hash[i] %100) /10;
-    fc = hash[i] %10;
-    int Lfg, Lfr, Lfc, Wfg, Wfr, Wfc;
-    //tempboardに上３っつを反映して勝ち負けチェック
-    if(is_Lcheckmate(turn, temp, fg, fr, fc))
-      {
-	Lmarker = true;
-	Lfg = fg, Lfr = fr, Lfc = fc;
-      }
-    if(is_Wcheckmate(turn, temp, fg, fr, fc))
-      {
-	Wmarker = true;
-	Wfg = fg, Wfr = fr, Wfc = fc;
-      }
-    if(i==hashlen-1){
-      if(Lmarker){
-	grc[0] = Lfg;
-	grc[1] = Lfr;
-	grc[2] = Lfc;
-      }
-      if(Wmarker){
-	grc[0] = Wfg;
-	grc[1] = Wfr;
-	grc[2] = Wfc;
-      }
-      if(Wmarker||Lmarker){
-	//deletepart
-	for(int a=0;a<SIZE;a++) {
-	  for(int b=0;b<SIZE;b++) {
-	    delete [] temp[a][b];
-	  }
-	  delete [] temp[a];
-	}
-	delete [] temp;
-	//deletepart
-	//return grc;
-	break;
-      }
-    }
-	
-    //cout << i << ": " <<fg << fr << fc << endl;
-    temp[fg][fr][fc] = 2;
-    for(int j=0; j<SampleN; j++) {
-      int ***newtemp;
-      newtemp = copyBoard(temp);
-      sum += simulation(newtemp);
-      for(int a=0;a<SIZE;a++) {
-	for(int b=0;b<SIZE;b++) {
-	  delete [] newtemp[a][b];
-	}
-	delete [] newtemp[a];
-      }
-      delete [] newtemp;
-      //deletepart
-    }
-    probarray[i] = sum;
-    cout << setw(3)<< i << "sum: " << setw(4) << probarray[i] << setw(6) <<hash[i] << endl;
+    int ***newtemp;
+    newtemp = copyBoard(temp);
+    int len = 0;
+    bool ***valid;
+    valid = validBoard(newtemp, len);
+    int *option;
+    option = validOption(valid, len);
     for(int a=0;a<SIZE;a++) {
-      for(int b=0;b<SIZE;b++) {
-	delete [] temp[a][b];
-      }
-      delete [] temp[a];
-    }
-    delete [] temp;
+  for(int b=0;b<SIZE;b++) {
+    delete [] temp[a][b];
+    delete [] newtemp[a][b];
+    delete [] valid[a][b];
   }
-  int maxp = 0;
-  int maxi = 0;
-  for(int i=0; i<hashlen; i++) {
-    if(maxp < probarray[i]) {
-      maxp = probarray[i];
-      maxi = i;
-    }
+  delete [] temp[a];
+  delete [] newtemp[a];
+  delete [] valid[a];
   }
-  cout << maxi << endl;
-  cout << hash[maxi] << endl;
-  delete [] hash;
-  delete [] probarray;
-  grc[0] = hash[maxi]/ 100;
-  grc[1] = (hash[maxi] %100) /10;
-  grc[2] = hash[maxi] %10;
-
-  cout << grc[0] << grc[1] << grc[2] << endl;
-  return 0;
+  delete[] temp;
+  delete[] newtemp;
+  delete[] valid;
+  delete[] option;
+}
+return 0;
 }
 bool checkWINNERar (int turn, int g, int r, int c, int*** board)
 {
@@ -380,11 +287,11 @@ void display(int *brd)
 }
 
 bool displayWINNER (int tn) {
-  char yn[100];
-  display (&adj[0][0][0]);
-  if (tn%2==0) {cout<<"\n\nAI is the winner!!\n\n";}
-  else cout<<"\n\nPlayer is the winner!!\n\n";
-  return 1;
+     char yn[100];
+     display (&adj[0][0][0]);
+     if (tn%2==0) {cout<<"\n\nAI is the winner!!\n\n";}
+        else cout<<"\n\nPlayer is the winner!!\n\n";
+     return 1;
 }
 void resetARRAY()
 {
@@ -427,24 +334,27 @@ int*** copyBoard(int board[SIZE][SIZE][SIZE])
       array3D[i][j] = new int[SIZE];
       for(int k=0;k<SIZE;k++) {
 	array3D[i][j][k] = board[i][j][k];
+  cout << i << j << k << " " <<board[i][j][k] << endl;
+	}
       }
     }
-  }
   return array3D;
 }
-int*** copyBoard(int ***boardd)
+int*** copyBoard(int ***board)
 {
-  int*** arr;
-  for(int x=0;x<SIZE;x++){
-    arr[x] = new int*[SIZE];
-    for(int y=0;y<SIZE;y++){
-      arr[x][y] = new int[SIZE];
-      for(int z=0;z<SIZE;z++){
-	arr[x][y][z] = boardd[x][y][z];
+  int*** array3D;
+  array3D = new int**[SIZE];
+  for(int i=0;i<SIZE;i++) {
+    array3D[i] = new int*[SIZE];
+    for(int j=0;j<SIZE;j++) {
+      array3D[i][j] = new int[SIZE];
+      for(int k=0;k<SIZE;k++) {
+	array3D[i][j][k] = board[i][j][k];
+  cout << "***" << i << j << k << " " <<board[i][j][k] << endl;
+	}
       }
     }
-  }
-  return arr;
+  return array3D;
 }
 bool*** validBoard(int ***board, int &count)
 {
@@ -457,7 +367,7 @@ bool*** validBoard(int ***board, int &count)
       for(int k=0;k<SIZE;k++) {
 	if(board[i][j][k] ==0) {
 	  array3D[i][j][k] = true;
-	  cout << count;
+    cout << count;
 	  count++;
 	}
 	else array3D[i][j][k] = false;
@@ -603,7 +513,7 @@ int* monteCarlo(int ***board)
 	grc[2] = Wfc;
       }
       if(Wmarker||Lmarker){
-	//deletepart
+      //deletepart
 	for(int a=0;a<SIZE;a++) {
 	  for(int b=0;b<SIZE;b++) {
 	    delete [] temp[a][b];

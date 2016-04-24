@@ -6,7 +6,7 @@
 
 using namespace std;
 const int sideLength = 3;
-const int SampleN = 5;
+const int SampleN = 3000;
 const int SIZE = sideLength + 2;
 const int WALL = sideLength + 1;
 const int WINCONDITION = 3;
@@ -453,22 +453,22 @@ int simulation(int ***board)
     int len = 0;
     int self = whosturn(simTurn);
     valid = validBoard(board,len);
-    cout << "len: " << len << endl;
+    //cout << "len: " << len << endl;
     if(len==0){
-      cout << "No choice" << endl;
+      //cout << "No choice" << endl;
       //cout << "break" << endl;
       break;
     }
     int *option;
     option = validOption(valid, len);
     int pick = rand() % len;
-    cout << "pick " << pick << endl;
-    cout << "option " << option[pick] << endl;
+    //cout << "pick " << pick << endl;
+    //cout << "option " << option[pick] << endl;
     
     gs = option[pick]/ 100;
     rs = (option[pick] %100) /10;
     cs = option[pick] %10;
-    cout << gs << rs << cs << endl;
+    //cout << gs << rs << cs << endl;
     if(adj[gs][rs][cs]!=0){
       cout << "\nPlease select an unoccupied square!\n\n";
       turn--;
@@ -478,7 +478,7 @@ int simulation(int ***board)
     else{board[gs][rs][cs] = 1;}
     
     if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
-    display(board);
+    //display(board);
     //delete zone
     for(int i=0;i<SIZE;i++) {
       for(int j=0;j<SIZE;j++) {
@@ -524,7 +524,7 @@ int* monteCarlo(int ***board)
   bool Lmarker = false, Wmarker = false;
   probarray = new int[hashlen];
   for(int i=0; i<hashlen; i++){
-    cout << i << "_______________ New _____________ \n\n\n\n\n" << endl; 
+    //cout << i << "_______________ New _____________ \n\n\n\n\n" << endl; 
     //tempboardをもう一回つくる
     int ***temp;
     temp = copyBoard(adj);
@@ -579,11 +579,11 @@ int* monteCarlo(int ***board)
       sum += simulation(newtemp);
       for(int a=0;a<SIZE;a++) {
 	for(int b=0;b<SIZE;b++) {
-	  delete [] temp[a][b];
+	  delete [] newtemp[a][b];
 	}
-	delete [] temp[a];
+	delete [] newtemp[a];
       }
-      delete [] temp;
+      delete [] newtemp;
       //deletepart
     }
     probarray[i] = sum;
@@ -596,7 +596,7 @@ int* monteCarlo(int ***board)
     }
     delete [] temp;
   }
-  int maxp = 0;
+  int maxp = -(SampleN);
   int maxi = 0;
   for(int i=0; i<hashlen; i++) {
     if(maxp < probarray[i]) {
