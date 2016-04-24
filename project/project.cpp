@@ -6,12 +6,14 @@
 
 using namespace std;
 const int sideLength = 3;
+const int SampleN = 1000;
 const int SIZE = sideLength + 2;
 const int WALL = sideLength + 1;
 const int WINCONDITION = 3;
 int turn, adj[SIZE][SIZE][SIZE];
 
 void display (int *brd);
+void display (int ***brd);
 bool displayWINNER (int turn);
 void resetARRAY ();
 bool checkWINNER (int turn, int g, int r, int c);
@@ -24,8 +26,9 @@ bool*** validBoard(int ***board, int &count);
 int simulation(int ***board);
 int* monteCarlo(int ***board);
 int simulation(int ***board);
-
+int whosturn(int turn);
 int main(){
+  srand (time(NULL));
   string inp;
   int g,r,c;
   resetARRAY();
@@ -62,21 +65,21 @@ int main(){
       }
     else // even for ai
       {
+	int*** board;
+	board = copyBoard(adj);
+	//monteCarlo
 	int *grc;
-	int ***current;
-	current = copyBoard(adj);
-	grc = monteCarlo(current);
+	grc = monteCarlo(board);
+	cout << grc[0] << grc[1] << grc[2] << endl;
 	g = grc[0], r = grc[1], c = grc[2];
-	delete []grc;
-	for(int i=0;i<SIZE;i++) {
-	  for(int j=0;j<SIZE;j++) {
-	    delete [] current[i][j];
+	for(int f=0;f<SIZE;f++) {
+	  for(int g=0;g<SIZE;g++) {
+	    delete [] board[f][g];
 	  }
-	  delete [] current[i];
+	  delete [] board[f];
 	}
-	delete [] current;
-	//g = 0, r = 1, c = 2;
-	cout << "g: " << g << "r: " << r << "c: " << c << endl; 
+	delete [] board;
+	delete [] grc;
       }
     //isOccupied()
     //cout << adj[g][r][c];
@@ -92,156 +95,195 @@ int main(){
     //cout << adj[g][r][c];
 
     if(checkWINNER(turn,g,r,c)) {
-      if(displayWINNER(turn)) {
-      }
+      {if(displayWINNER(turn)) break;}
     }
 
     cout << "\n\n\n";
     
   }
+  //display(&adj[0][0][0]);
   return 0;
 }
+
 bool checkWINNERar (int turn, int g, int r, int c, int*** board)
 {
-     int h=1;                   //sets 'h' to either
-     if (turn%2==0) h=2;        //Xs or Os to check
+  int h=1;                   //sets 'h' to either
+  if (turn%2==0) h=2;        //Xs or Os to check
      
-     int x[sideLength],y[sideLength],z[sideLength];        //variables to store winning coordinates
-     x[0]=g;y[0]=r;z[0]=c;      //sets 0 of each to last move
+  int x[sideLength],y[sideLength],z[sideLength];        //variables to store winning coordinates
+  x[0]=g;y[0]=r;z[0]=c;      //sets 0 of each to last move
      
-     int ct;
-     for (int a=1;a<14;a++){    //iterates through all possible directions
-           ct=1;                      //each time resetting counter to one 
-           int g2=g; int r2=r; int c2=c;
-           for (int i=0;board[g2][r2][c2]!=WALL;){
-                 switch (a) {
-                        case 1:g2--;break;                //////////////////////
-                        case 2:g2--;r2--;c2--;break;      //  increments
-                        case 3:g2--;r2--;break;           //  in each
-                        case 4:g2--;r2--;c2++;break;      //  possible
-                        case 5:g2--;c2--;break;           // direction
-                        case 6:g2--;c2++;break;           //  until 
-                        case 7:g2--;r2++;c2--;break;      // hitting
-                        case 8:g2--;r2++;break;           //  a '5'
-                        case 9:g2--;r2++;c2++;break;      //   
-                        case 10:c2--;break;               //
-                        case 11:r2--;c2--;break;          //   
-                        case 12:r2--;break;               //  
-                        case 13:r2--;c2++;break;          //////////////////////
-                         }
-                 if (adj[g2][r2][c2]==h) {
-                           x[ct]=g2;y[ct]=r2;z[ct]=c2;
-                           ct++;}
+  int ct;
+  for (int a=1;a<14;a++){    //iterates through all possible directions
+    ct=1;                      //each time resetting counter to one 
+    int g2=g; int r2=r; int c2=c;
+    for (int i=0;board[g2][r2][c2]!=WALL;){
+      switch (a) {
+      case 1:g2--;break;                //////////////////////
+      case 2:g2--;r2--;c2--;break;      //  increments
+      case 3:g2--;r2--;break;           //  in each
+      case 4:g2--;r2--;c2++;break;      //  possible
+      case 5:g2--;c2--;break;           // direction
+      case 6:g2--;c2++;break;           //  until 
+      case 7:g2--;r2++;c2--;break;      // hitting
+      case 8:g2--;r2++;break;           //  a '5'
+      case 9:g2--;r2++;c2++;break;      //   
+      case 10:c2--;break;               //
+      case 11:r2--;c2--;break;          //   
+      case 12:r2--;break;               //  
+      case 13:r2--;c2++;break;          //////////////////////
+      }
+      if (adj[g2][r2][c2]==h) {
+	x[ct]=g2;y[ct]=r2;z[ct]=c2;
+	ct++;}
                  
-                 }
+    }
                  
                  
-          g2=g;r2=r;c2=c;   //reset placeholder variables
+    g2=g;r2=r;c2=c;   //reset placeholder variables
          
          
-          for (int i=0;board[g2][r2][c2]!=5;) { 
+    for (int i=0;board[g2][r2][c2]!=WALL;) { 
               
               
-                switch (a) {
-                      case 1:g2++;break;                ///////////////////////
-                      case 2:g2++;r2++;c2++;break;      //
-                      case 3:g2++;r2++;break;           // and
-                      case 4:g2++;r2++;c2--;break;      // then back
-                      case 5:g2++;c2++;break;           //  in the
-                      case 6:g2++;c2--;break;           //  opposite 
-                      case 7:g2++;r2--;c2++;break;      //  direction
-                      case 8:g2++;r2--;break;           //
-                      case 9:g2++;r2--;c2--;break;      //
-                      case 10:c2++;break;               //
-                      case 11:r2++;c2++;break;          //
-                      case 12:r2++;break;               //
-                      case 13:r2++;c2--;break;          ///////////////////////
-                      }
+      switch (a) {
+      case 1:g2++;break;                ///////////////////////
+      case 2:g2++;r2++;c2++;break;      //
+      case 3:g2++;r2++;break;           // and
+      case 4:g2++;r2++;c2--;break;      // then back
+      case 5:g2++;c2++;break;           //  in the
+      case 6:g2++;c2--;break;           //  opposite 
+      case 7:g2++;r2--;c2++;break;      //  direction
+      case 8:g2++;r2--;break;           //
+      case 9:g2++;r2--;c2--;break;      //
+      case 10:c2++;break;               //
+      case 11:r2++;c2++;break;          //
+      case 12:r2++;break;               //
+      case 13:r2++;c2--;break;          ///////////////////////
+      }
                                    
-              if (adj[g2][r2][c2]==h) {
-                      x[ct]=g2;y[ct]=r2;z[ct]=c2;
-                      ct++;
-                      }
-               }
-               if (ct>WINCONDITION) {return true;}
-               }
-     return false;
+      if (board[g2][r2][c2]==h) {
+	x[ct]=g2;y[ct]=r2;z[ct]=c2;
+	ct++;
+      }
+    }
+    if (ct>=WINCONDITION) {return true;}
+  }
+  return false;
 }
 
 bool checkWINNER (int turn,int g,int r,int c) {
-     int h=1;                   //sets 'h' to either
-     if (turn%2==0) h=2;        //Xs or Os to check
+  int h=1;                   //sets 'h' to either
+  if (turn%2==0) h=2;        //Xs or Os to check
      
-     int x[sideLength],y[sideLength],z[sideLength];        //variables to store winning coordinates
-     x[0]=g;y[0]=r;z[0]=c;      //sets 0 of each to last move
+  int x[sideLength],y[sideLength],z[sideLength];        //variables to store winning coordinates
+  x[0]=g;y[0]=r;z[0]=c;      //sets 0 of each to last move
      
-     int ct;
+  int ct;
      
-     for (int a=1;a<14;a++){    //iterates through all possible directions
+  for (int a=1;a<14;a++){    //iterates through all possible directions
      
-           ct=1;                      //each time resetting counter to one 
+    ct=1;                      //each time resetting counter to one 
      
-           int g2=g; int r2=r; int c2=c;
+    int g2=g; int r2=r; int c2=c;
            
-           for (int i=0;adj[g2][r2][c2]!=WALL;){
+    for (int i=0;adj[g2][r2][c2]!=WALL;){
 
-                 switch (a) {
-                        case 1:g2--;break;                //////////////////////
-                        case 2:g2--;r2--;c2--;break;      //  increments
-                        case 3:g2--;r2--;break;           //  in each
-                        case 4:g2--;r2--;c2++;break;      //  possible
-                        case 5:g2--;c2--;break;           // direction
-                        case 6:g2--;c2++;break;           //  until 
-                        case 7:g2--;r2++;c2--;break;      // hitting
-                        case 8:g2--;r2++;break;           //  a '5'
-                        case 9:g2--;r2++;c2++;break;      //   
-                        case 10:c2--;break;               //
-                        case 11:r2--;c2--;break;          //   
-                        case 12:r2--;break;               //  
-                        case 13:r2--;c2++;break;          //////////////////////
-                         }
+      switch (a) {
+      case 1:g2--;break;                //////////////////////
+      case 2:g2--;r2--;c2--;break;      //  increments
+      case 3:g2--;r2--;break;           //  in each
+      case 4:g2--;r2--;c2++;break;      //  possible
+      case 5:g2--;c2--;break;           // direction
+      case 6:g2--;c2++;break;           //  until 
+      case 7:g2--;r2++;c2--;break;      // hitting
+      case 8:g2--;r2++;break;           //  a '5'
+      case 9:g2--;r2++;c2++;break;      //   
+      case 10:c2--;break;               //
+      case 11:r2--;c2--;break;          //   
+      case 12:r2--;break;               //  
+      case 13:r2--;c2++;break;          //////////////////////
+      }
                         
-                 if (adj[g2][r2][c2]==h) {
-                           x[ct]=g2;y[ct]=r2;z[ct]=c2;
-                           ct++;}
+      if (adj[g2][r2][c2]==h) {
+	x[ct]=g2;y[ct]=r2;z[ct]=c2;
+	ct++;}
                  
-                 }
+    }
                  
                  
-          g2=g;r2=r;c2=c;   //reset placeholder variables
+    g2=g;r2=r;c2=c;   //reset placeholder variables
          
          
-          for (int i=0;adj[g2][r2][c2]!=WALL;) { 
+    for (int i=0;adj[g2][r2][c2]!=WALL;) { 
               
               
-                switch (a) {
-                      case 1:g2++;break;                ///////////////////////
-                      case 2:g2++;r2++;c2++;break;      //
-                      case 3:g2++;r2++;break;           // and
-                      case 4:g2++;r2++;c2--;break;      // then back
-                      case 5:g2++;c2++;break;           //  in the
-                      case 6:g2++;c2--;break;           //  opposite 
-                      case 7:g2++;r2--;c2++;break;      //  direction
-                      case 8:g2++;r2--;break;           //
-                      case 9:g2++;r2--;c2--;break;      //
-                      case 10:c2++;break;               //
-                      case 11:r2++;c2++;break;          //
-                      case 12:r2++;break;               //
-                      case 13:r2++;c2--;break;          ///////////////////////
-                      }
+      switch (a) {
+      case 1:g2++;break;                ///////////////////////
+      case 2:g2++;r2++;c2++;break;      //
+      case 3:g2++;r2++;break;           // and
+      case 4:g2++;r2++;c2--;break;      // then back
+      case 5:g2++;c2++;break;           //  in the
+      case 6:g2++;c2--;break;           //  opposite 
+      case 7:g2++;r2--;c2++;break;      //  direction
+      case 8:g2++;r2--;break;           //
+      case 9:g2++;r2--;c2--;break;      //
+      case 10:c2++;break;               //
+      case 11:r2++;c2++;break;          //
+      case 12:r2++;break;               //
+      case 13:r2++;c2--;break;          ///////////////////////
+      }
                                    
-              if (adj[g2][r2][c2]==h) {
-                      x[ct]=g2;y[ct]=r2;z[ct]=c2;
-                      ct++;
-                      }
-               }
-               if (ct>WINCONDITION) {for (int b=0;b<4;b++) {adj[x[b]][y[b]][z[b]]= -1;} return 1;}
-               }
-     return 0;
+      if (adj[g2][r2][c2]==h) {
+	x[ct]=g2;y[ct]=r2;z[ct]=c2;
+	ct++;
+      }
+    }
+    if (ct>=WINCONDITION) {
+      for (int b=0;b<sideLength;b++) {adj[x[b]][y[b]][z[b]]= -1;}
+      return 1;
+    }
+  }
+  return 0;
 }
 
 
-
+void display (int ***board)
+{
+  int range = sideLength * 2;
+  for(int i = 1;i <= sideLength;i++)
+    {
+      cout << "#" << i << "\t\t";
+      if (i == sideLength) cout <<"\n\n\n";
+    }
+  int n;
+  for(int y=1;y<1+sideLength;y++) {
+    for(int x=1;x<1+sideLength;x++){
+      for(int z=1;z<1+sideLength;z++){
+      	switch (board[x][y][z]) {
+      	case 0: cout << " ";break;
+      	case 1: cout << "X";break;
+      	case 2: cout << "O";break;
+      	case -1: cout << "t";break;
+      	}
+  
+      	if(z<sideLength) {cout << "|";}
+      }
+      if(x<sideLength) cout << "\t\t";
+    }
+    if(y<sideLength) {
+      cout << "\n";
+      for(int m=1; m<sideLength * range;m++) {
+	if(m%range == 0) {cout <<"\t\t";}
+	else if(m%2==0) {cout << "+";}
+	else cout << "-";
+      }
+      cout <<"\n";
+    }
+  }
+  cout << "\n\n";
+  return;
+}
 void display(int *brd)
 {
   int range = sideLength * 2;
@@ -280,12 +322,13 @@ void display(int *brd)
   return;
 }
 
-bool displayWINNER(int tn){
-  char yn[100];
-  display (&adj[0][0][0]);
-  return 1;
+bool displayWINNER (int tn) {
+     char yn[100];
+     display (&adj[0][0][0]);
+     if (tn%2==0) {cout<<"\n\nAI is the winner!!\n\n";}
+        else cout<<"\n\nPlayer is the winner!!\n\n";
+     return 1;
 }
-
 void resetARRAY()
 {
   for(int x=0;x<SIZE;x++){
@@ -350,14 +393,16 @@ bool*** validBoard(int ***board, int &count)
 int* validOption(bool ***board,int len)
 {
   int *arr;
-  int count=0;
+  int c = 0;
   arr = new int[len];
   for(int i=0;i<SIZE;i++) {
     for(int j=0;j<SIZE;j++) {
       for(int k=0;k<SIZE;k++) {
-	if(count >=len) break;
+	if(c >=len) break;
 	if(board[i][j][k] == true){
-	  arr[count] = i*100 + j*10 + k;
+	  arr[c] = i*100 + j*10 + k;
+	  //cout << arr[c] << endl;
+	  c++;
 	} 
       }
     }
@@ -365,20 +410,84 @@ int* validOption(bool ***board,int len)
   return arr;
 }
 //monte carlo いったんコピーを作ってからいれる
+int whosturn(int turn)
+{
+  if(turn%2==0) return 2;
+  else return 1;
+}
+int simulation(int ***board)
+{
+  int simTurn=0;
+  int gs, rs, cs;
+  while(true){
 
+    simTurn++;
+    bool ***valid;
+    int len = 0;
+    int self = whosturn(simTurn);
+    valid = validBoard(board,len);
+    //cout << "len: " << len << endl;
+    if(len==0){
+      //cout << "No choice" << endl;
+      //cout << "break" << endl;
+      break;
+    }
+    int *option;
+    option = validOption(valid, len);
+    int pick = rand() % len;
+    //cout << "pick " << pick << endl;
+    //cout << "option " << option[pick] << endl;
+    
+    gs = option[pick]/ 100;
+    rs = (option[pick] %100) /10;
+    cs = option[pick] %10;
+    //cout << gs << rs << cs << endl;
+    if(adj[gs][rs][cs]!=0){
+      cout << "\nPlease select an unoccupied square!\n\n";
+      turn--;
+      continue;
+    }
+    if(simTurn%2==0){board[gs][rs][cs] = 2;}
+    else{board[gs][rs][cs] = 1;}
+    
+    if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
+    //display(board);
+    //delete zone
+    for(int i=0;i<SIZE;i++) {
+      for(int j=0;j<SIZE;j++) {
+	delete [] valid[i][j];
+      }
+      delete [] valid[i];
+    }
+    delete [] valid;
+    delete [] option;
+  }
+  if(!checkWINNERar(simTurn, gs, rs, cs, board)) return 0;
+  else if(simTurn % 2 == 0){
+    //cout << 1 << endl;
+    return 1;
+  }
+  else {
+    //cout << -1 << endl;
+    return -1;
+  }
+  
+}
 int* monteCarlo(int ***board)
 {
   int *grc;
   grc = new int[3];
   bool ***firstvalid;
-  int hashlen;
+  int hashlen = 0;
+  //definitely hashlen must be initialized!!!
   firstvalid = validBoard(board, hashlen);
+  cout << "hashlen: " << hashlen;
   int *hash;
   hash = validOption(firstvalid, hashlen);
   //delete 3d array;
   for(int i=0;i<SIZE;i++) {
     for(int j=0;j<SIZE;j++) {
-	delete [] firstvalid[i][j];
+      delete [] firstvalid[i][j];
     }
     delete [] firstvalid[i];
   }
@@ -398,25 +507,29 @@ int* monteCarlo(int ***board)
     fr = (hash[i] %100) /10;
     fc = hash[i] %10;
     //tempboardに上３っつを反映して勝ち負けチェック
-    for(int i=0; i<100; i++) {
+    //cout << i << ": " <<fg << fr << fc << endl;
+    temp[fg][fr][fc] = 2;
+    for(int j=0; j<SampleN; j++) {
       sum += simulation(temp);
     }
     probarray[i] = sum;
-    for(int i=0;i<SIZE;i++) {
-      for(int j=0;j<SIZE;j++) {
-	delete [] temp[i][j];
+    cout << i << "sum: " << sum << endl;
+    for(int a=0;a<SIZE;a++) {
+      for(int b=0;b<SIZE;b++) {
+	delete [] temp[a][b];
       }
-      delete [] temp[i];
+      delete [] temp[a];
     }
     delete [] temp;
   }
   int maxp = 0;
   for(int i=0; i<hashlen; i++) {
     if(maxp < probarray[i]) {
-      maxp = probarray[i];
+      maxp = hash[i];
     }
   }
   delete [] hash;
+  delete [] probarray;
   grc[0] = maxp/ 100;
   grc[1] = (maxp %100) /10;
   grc[2] = maxp %10;
@@ -424,39 +537,5 @@ int* monteCarlo(int ***board)
   return grc;
  
 }
-int simulation(int ***board)
-{
-  int simTurn=0;
-  int gs, rs, cs;
-  do{
-    simTurn++;
-    bool ***valid;
-    int len = 0;
-    valid = validBoard(board,len);
-    if(len==0){
-      return 0;
-    }
-    int *option;
-    option = validOption(valid, len);
-    int pick = rand() % len;
-    
-    gs = option[pick]/ 100;
-    rs = (option[pick] %100) /100;
-    cs = option[pick] %10;
-    if(adj[gs][rs][cs]!=0){
-      cout << "\nPlease select an unoccupied square!\n\n";
-      turn--;
-      continue;
-    }
-    if(turn%2==0){board[gs][rs][cs] = 2;}
-    else{board[gs][rs][cs] = 1;}
-    
-  }while(checkWINNER (simTurn, gs, rs, cs));
-  if(simTurn % 2 == 0) return 1;
-  else return -1;
-			 
-  
-}
-
 
     
