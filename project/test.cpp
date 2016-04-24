@@ -36,53 +36,7 @@ int main(){
   int gs, rs, cs;
   int*** board;
   board = copyBoard(adj);
-  while(true){
-    simTurn++;
-    bool ***valid;
-    int len = 0;
-    int self = whosturn(simTurn);
-    valid = validBoard(board,len);
-    cout << "len: " << len << endl;
-    if(len==0){
-      cout << "No choice" << endl;
-      break;
-    }
-    int *option;
-    option = validOption(valid, len);
-    int pick = rand() % len;
-    cout << "pick " << pick << endl;
-    cout << "option " << option[pick] << endl;
-    
-    gs = option[pick]/ 100;
-    rs = (option[pick] %100) /10;
-    cs = option[pick] %10;
-    cout << gs << rs << cs << endl;
-    if(adj[gs][rs][cs]!=0){
-      cout << "\nPlease select an unoccupied square!\n\n";
-      turn--;
-      continue;
-    }
-    if(simTurn%2==0){board[gs][rs][cs] = 2;}
-    else{board[gs][rs][cs] = 1;}
-    
-    if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
-    display(board);
-    //delete zone
-    for(int i=0;i<SIZE;i++) {
-      for(int j=0;j<SIZE;j++) {
-	delete [] valid[i][j];
-      }
-      delete [] valid[i];
-    }
-    delete [] valid;
-    delete [] option;
-  }
-  if(simTurn % 2 == 0){
-    cout << 1 << endl;
-  }
-  else {
-    cout << -1 << endl;
-  }
+  cout << simulation(board);
   return 0;
 }
 bool checkWINNERar (int turn, int g, int r, int c, int*** board)
@@ -393,8 +347,58 @@ int whosturn(int turn)
 }
 int simulation(int ***board)
 {
-  return 1;
-			 
+  int simTurn=0;
+  int gs, rs, cs;
+  while(true){
+    simTurn++;
+    bool ***valid;
+    int len = 0;
+    int self = whosturn(simTurn);
+    valid = validBoard(board,len);
+    cout << "len: " << len << endl;
+    if(len==0){
+      cout << "No choice" << endl;
+      break;
+    }
+    int *option;
+    option = validOption(valid, len);
+    int pick = rand() % len;
+    cout << "pick " << pick << endl;
+    cout << "option " << option[pick] << endl;
+    
+    gs = option[pick]/ 100;
+    rs = (option[pick] %100) /10;
+    cs = option[pick] %10;
+    cout << gs << rs << cs << endl;
+    if(adj[gs][rs][cs]!=0){
+      cout << "\nPlease select an unoccupied square!\n\n";
+      turn--;
+      continue;
+    }
+    if(simTurn%2==0){board[gs][rs][cs] = 2;}
+    else{board[gs][rs][cs] = 1;}
+    
+    if(checkWINNERar(simTurn, gs, rs, cs, board)){break;}
+    display(board);
+    //delete zone
+    for(int i=0;i<SIZE;i++) {
+      for(int j=0;j<SIZE;j++) {
+	delete [] valid[i][j];
+      }
+      delete [] valid[i];
+    }
+    delete [] valid;
+    delete [] option;
+  }
+  if(!checkWINNERar(simTurn, gs, rs, cs, board)) return 0;
+  else if(simTurn % 2 == 0){
+    cout << 1 << endl;
+    return 1;
+  }
+  else {
+    cout << -1 << endl;
+    return -1;
+  }
   
 }
 
