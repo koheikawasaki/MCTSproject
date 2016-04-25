@@ -5,11 +5,11 @@
 #include <iomanip>
 
 using namespace std;
-const int sideLength = 3;
+const int sideLength = 5;
 const int SampleN = 3000;
 const int SIZE = sideLength + 2;
 const int WALL = sideLength + 1;
-const int WINCONDITION = 3;
+const int WINCONDITION = 4;
 int turn, adj[SIZE][SIZE][SIZE];
 
 void display (int *brd);
