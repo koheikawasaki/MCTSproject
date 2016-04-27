@@ -5,11 +5,11 @@
 #include <iomanip>
 
 using namespace std;
-const int sideLength = 5;
+const int sideLength = 3;
 const int SampleN = 3000;
 const int SIZE = sideLength + 2;
 const int WALL = sideLength + 1;
-const int WINCONDITION = 4;
+const int WINCONDITION = 3;
 int turn, adj[SIZE][SIZE][SIZE];
 
 void display (int *brd);
@@ -545,6 +545,7 @@ int* monteCarlo(int ***board)
       {
 	Wmarker = true;
 	Wfg = fg, Wfr = fr, Wfc = fc;
+	i+=hashlen;
       }
     if(i==hashlen-1){
       if(Lmarker){
