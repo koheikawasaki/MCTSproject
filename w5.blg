@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: w5.aux
+The style file: plain.bst
+Database file #1: w5.bib
+Repeated entry---line 71 of file w5.bib
+ : @incollection{chaslot2008parallel
+ :                                  ,
+I'm skipping whatever remains of this entry
+Warning--empty journal in fumodel
+Warning--empty year in fumodel
+You've used 12 entries,
+            2118 wiz_defined-function locations,
+            560 strings with 5572 characters,
+and the built_in function-call counts, 4568 in all, are:
+= -- 465
+> -- 173
+< -- 8
++ -- 69
+- -- 56
+* -- 268
+:= -- 704
+add.period$ -- 40
+call.type$ -- 12
+change.case$ -- 65
+chr.to.int$ -- 0
+cite$ -- 14
+duplicate$ -- 215
+empty$ -- 391
+format.name$ -- 56
+if$ -- 1021
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 11
+newline$ -- 62
+num.names$ -- 24
+pop$ -- 93
+preamble$ -- 1
+purify$ -- 52
+quote$ -- 0
+skip$ -- 155
+stack$ -- 0
+substring$ -- 278
+swap$ -- 70
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 48
+warning$ -- 2
+while$ -- 47
+width$ -- 14
+write$ -- 134
+(There was 1 error message)
