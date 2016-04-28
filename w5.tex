@@ -1,3 +1,33 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{mathtools}
+
+
+%Instructions to compile with bibliography:
+%1. pdflatex writing3sample
+%2. bibtex writing3sample
+%3. pdflatex writing3sample
+%4. pdflatex writing3sample
+
+\title{Adversarial search of Monte-Carlo simulation for 3D Tic-Tac-Toe}
+
+\author{
+Kohei Kawasaki\\kawas009@umn.edu
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+The first Monte-Carlo simulation appeared on early 1990. B. Abramson developed (expected-outcome) model which returns expected value of the game’s outcome\cite{}. A standard model of static evaluators is Min-Max tree search. For the difficulty of setting of evaluation, however, the design is viewed as impossible. Moreover, it was too difficult to evaluate the accuracy due to the absence of standard evaluation to grasp a strategy in the entire game. From this perspective, Abramson defined as (Expected-Outcome) values as 
+\[EO(G) = \sum_{leaf=1}^{k} V_{leaf} P_{leaf}\]
+where Node G is given by a player’s expected payoff over an infinite number of random completions o game, k is the number of leaves in the subtree, \(P_{leaf}\) is the probability to be reached in a given random play. At the bottom line, Abramson tired to make a heuristic from the statical evaluation of random game plays. Due to limitation of computer architecture at those days, the test was operated 6x6 Othello. By running a program in a tons of random game, from its value, the player make a decision. 
+
+B. Brugmann implemented simulated annealing to the Monte Carlo simulation as their project GOBBLE\cite{}. At the first glance because of the difference between traveling salesman problem and tree search Game like Go however, the two competing parties playing the game in hostile way and have to optimise two sequences of moves. It seemed simulated annealing cannot be to find local variable due to the discontinuous function of the list of moves. As one of possible solution, through the simulation of random games, algorithm itself is learned. And here is the 2 point of improvement. Evaluation of the moves. at any stage of the game, moves were evaluated by the average score of the game. Selection of the moves. Simulated annealing was used to control the probability to good moves are more likely to be played first.
+
+
+Boozy and Helmstetter developed two Go programs based on same basic idea\cite{}. That derives from their two hypothesis. First if it is possible to terminate search process of game, the process provides the best move and this process does not necessarily need domain dependent knowledge, however, its cost is exponential by the search depth. Second, knowledge-based go programs seemed impossible to improve. Thus, their paper explored a hybrid solution of these two idea, which is little knowledge based. As an domain-dependent knowledge part, they defined of an {eye}, and in the {eye} random programs not to play. Next thing is evaluation of terminal position for a random game. There are two two ways to evaluate it,{for the first move of the game only}, or  {for all moves played in the as if they were the first to be played.} In their project latter one is implemented. The Advantage is the one random game helps evaluate almost all possible moves at the root, yet as a drawback, move order is ignored which is crucial to this game. 
+
 
 Upper Confidence bounds to applied to Trees strategy(UCT) was advocated and developed by Kocsis and Szepesvari(2006) in order to find a near optimal action in large state-space Markovian Decision Problems(MDPs). The previous approach to this problem was 
 And the strategy is used widely nowadays in selection of each node to be expanded from its easiness to implement.
@@ -23,6 +53,24 @@ In the second back propagation part, their strategy returns the value relying of
 As a consequence it does not require any evaluation function in the usage of this selection strategy and the backpropagation strategy. Therefore, this is applicable to any game where it is difficult or impossible  to create an evaluation function without parameter tuning.
 
 A parallel Monte Carlo Tree Search Algorithm is provided Tristan and Nicolas to UCT algorithm. They provide Mater Slave algorithm fro MCTS and With a single slave and five seconds per move our algorithm scores 40.5\% against GNU Go, with sixteen slaves and five seconds per move it scores 70.5\%. The master process is responsible for descending and updating the UCT tree. The slaves do the playouts  that start with a sequence of moves sent by the master. The master starts sending the position to each slave. Then it develops the UCT tree once for each slave and sends them an initial sequence of moves.The slave process loops until the master stops it with an END GAME message, otherwise it receives the board, the color to play
+
+
+
+
+
+\bibliography{/Users/koheikawasaki/Desktop/4511W/writing/project/ref}
+\bibliographystyle{plain}
+
+\end{document}
+
+
+
+
+
+
+
+
+
 
 
 
