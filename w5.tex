@@ -1,0 +1,31 @@
+
+Upper Confidence bounds to applied to Trees strategy(UCT) was advocated and developed by Kocsis and Szepesvari(2006) in order to find a near optimal action in large state-space Markovian Decision Problems(MDPs). The previous approach to this problem was 
+And the strategy is used widely nowadays in selection of each node to be expanded from its easiness to implement.
+From the two primary aspects of Monte Carlo planning algorithms, which is (1) small error of probability even if the algorithms is halted prematurely, and the returning the best action if enough time is given. The UCT Algorithm outline is here, In a bandit problem, K actions are defined in accordance with the set of random payoffs \(X_{it}, i = 1, ... K, t\geq 1\), where each i is the index of a game. And this algorithm, keeps track of the average rewards \(X_{i, Ti(t-1)}\) for all the arms and the distribution function is bounded by the upper confidence. 
+\[ I_{t} = argmax_{\substack{i \in{i, .. K}}} {X_{i, Ti(t-1)} + c_{t-1, Ti(t-1)}}\]
+where \(C_{t, s}\) is a bias sequence.
+\[C_{t, s} = \sqrt{\frac{2ln(t)}{s}}\]
+Even though, their theoretical analysis is consistent in the optimal action as the sample number grows to infinity, in the experiment of sailing domain they found out the significant error level. 
+
+As one of the other selection part strategy of Monte Carlo, in 2006 Coulom developed PBBM(Probability to be Better than Best Move). In their paper their attempt of a new framework is combining Min-max tree search algorithm into it by not backing up the min-max value close to the root, the average value at each depth like a Min-Max, but by general backup operator, which is defined below. 
+Most of the monte carlo algorithm rely on the central limit theorem that is approached a normal distribution with mean \(\mu\) and variance. In their progressive purning, the standard deviation of the best move is taken into account. However, it is very insecure in tree search, because the payback of random simulations are not identically distributed as the search tree expanded, move probabilities are changed. For the sake of dodging the dangers of completely pruning a move, it must be considered to allocate the reduced probability of exploring a bad move, instead of cutting off the move which is supposed to bad move at this moment.   
+\[u_{i} = exp(-2.4\frac{\mu_{0} - \mu_{i}}{\sqrt{2(\sigma^2_{0} - \sigma^2_{i})}}\]
+where \mu_{0} and \sigma_{0} are the value and standard deviation of the best move, respectively. Similarly, \mu_{i} and \sigma_{i} are the value and the standard deviation of the move under consideration.
+
+Objective Monte Carlo developed in 2006 by Chaslot et al. Objective Monte Carlo consists of two part, the first one is a move selection strategy and the next one is a new back propagation strategy. \\
+In the first part, suppose Vm is the current evaluation of the move m, and \(\sigma\) is the standard deviation of Vm. They defined the probability of the move m to be superior to \(O_{bj}\) as 
+\[U_{m}(O_{bj}) = \frag
+	{\sum_{i=O_{bj}}^{\infty} D_{m}(x)}
+	{\sum_{i=-\infty}^{\infty} D_{m}(x)}\]
+where, \[D_{m}(S) = N(V_{m}, \frag{\sigma}{\sqrt n}) \]
+In the second back propagation part, their strategy returns the value relying of standard deviation of the move m to the value of move m. the Min-Max values measured by all child node in a max of random number, so it is overestimated in a sence. To avoid this error, the value returned by the 
+\(U_{m}(O_{bj})\) represent the urgency of the a move, the value estimated by the back propagation strategy should be close to the average value of the child node in the beginning of the experiments.
+As a consequence it does not require any evaluation function in the usage of this selection strategy and the backpropagation strategy. Therefore, this is applicable to any game where it is difficult or impossible  to create an evaluation function without parameter tuning.
+
+A parallel Monte Carlo Tree Search Algorithm is provided Tristan and Nicolas to UCT algorithm. They provide Mater Slave algorithm fro MCTS and With a single slave and five seconds per move our algorithm scores 40.5\% against GNU Go, with sixteen slaves and five seconds per move it scores 70.5\%. The master process is responsible for descending and updating the UCT tree. The slaves do the playouts  that start with a sequence of moves sent by the master. The master starts sending the position to each slave. Then it develops the UCT tree once for each slave and sends them an initial sequence of moves.The slave process loops until the master stops it with an END GAME message, otherwise it receives the board, the color to play
+
+
+
+
+
+
