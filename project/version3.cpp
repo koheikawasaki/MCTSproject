@@ -362,8 +362,9 @@ void resetARRAY()
 
 int normalizeINPUT (string inp) {
   int i, q; 
-  string n;
-  for (int i=0;inp[i] != ' ';i++) n=n+inp[i];
+  string n = "";
+  for (int i=0; i < inp.length() && inp[i] != ' ';i++) 
+	n=n+inp[i];
   q=atoi(n.c_str());
   return q;
 }
@@ -454,7 +455,7 @@ int simulation(int ***board)
     int len = 0;
     int self = whosturn(simTurn);
     valid = validBoard(board,len);
-    //cout << "len: " << len << endl;
+    //~ cout << "len: " << len << endl;
     if(len==0){
       //cout << "No choice" << endl;
       //cout << "break" << endl;

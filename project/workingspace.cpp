@@ -135,6 +135,8 @@ int normalizeINPUT (string inp) {
     string n;
     for (int i=0;inp[i] != ' ';i++) n=n+inp[i];
     q=atoi(n.c_str());
+    int q = -1;
+    cin >> q;
     return q;
 }
 
