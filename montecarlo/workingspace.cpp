@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <iomanip>
+#include "mc.h"
 
 using namespace std;
 
@@ -15,44 +16,93 @@ int normalizeINPUT (string inp);
 int turn, adj[6][6][6];
 
 
-int main()
-    {
-      cout << turn << endl;
-         string inp;
-         int g,r,c; 
-         resetARRAY ();
+int main(){
+	int xwin = 0;
+	int owin = 0;
+	
+	cout << turn << endl;
+	string inp;
+	int g,r,c; 
+	resetARRAY ();
+	MC AI1(1,&adj[0][0][0],6);
+	MC AI2(2,&adj[0][0][0],6);
+	
          
-    while (true) {
-         turn++;
-         DISPLAY (&adj[0][0][0]);
-         if (turn%2==0) {cout<<"\nPlayer O, it's your turn!\n\n";}
-             else {cout<<"\nPlayer X, it's your turn!\n\n";}
-          cout<<"Enter grid number ('Q' to Quit) : ";
-          getline (cin,inp);
-          if ((inp[0]=='q')||(inp[0]=='Q')) break;
-          g=normalizeINPUT(inp);
-          if ((g<1)||(g>4)) {cout<<"\nInvalid selection.\n\n";            
-                       system("PAUSE");turn--;continue;}
-                       
-          cout<<"Row number : ";
-          getline (cin,inp);
-          r=normalizeINPUT(inp);
-          if ((r<1)||(r>4)) {cout<<"\nInvalid selection.\n\n";            
-                       system("PAUSE");turn--;continue;}
-                       
-          cout<<"Column number : ";
-          getline (cin,inp);
-          c=normalizeINPUT(inp);
-          if ((c<1)||(c>4)) {cout<<"\nInvalid selection.\n\n";            
-                       system("PAUSE");turn--;continue;}
-          if (adj[g][r][c]!=0) {cout<<"\nPlease select an unoccupied square!\n\n";
-                       system("PAUSE");turn--;continue;}
-          if (turn%2==0) {adj[g][r][c]=2;}
-             else {adj[g][r][c]=1;}
-          if (checkWINNER (turn,g,r,c)) {if(displayWINNER(turn)) break;}
-         }
-         cout<<"\n\n\n";
-         return 0;
+	while (true) {
+		turn++;
+		DISPLAY (&adj[0][0][0]);
+		if (turn%2==0){ 
+			cout<<"\nPlayer O, it's your turn!\n\n";
+			AI2.getAIresponse(g,r,c,1000);
+			
+		}else{ 
+			cout<<"\nPlayer X, it's your turn!\n\n";
+			
+			AI1.getAIresponse(g,r,c,1000);
+			
+			//~ cout<<"Enter grid number ('Q' to Quit) : ";
+			//~ getline (cin,inp);
+			//~ if ((inp[0]=='q')||(inp[0]=='Q')) 
+				//~ break;
+			//~ g=normalizeINPUT(inp);
+			//~ if ((g<1)||(g>4)) {
+				//~ cout<<"\nInvalid selection.\n\n";            
+				//~ system("PAUSE");
+				//~ turn--;
+				//~ continue;
+			//~ }
+				   //~ 
+			//~ cout<<"Row number : ";
+			//~ getline (cin,inp);
+			//~ r=normalizeINPUT(inp);
+			//~ if ((r<1)||(r>4)) {
+				//~ cout<<"\nInvalid selection.\n\n";            
+				//~ system("PAUSE");
+				//~ turn--;
+				//~ continue;
+			//~ }
+				   //~ 
+			//~ cout<<"Column number : ";
+			//~ getline (cin,inp);
+			//~ c=normalizeINPUT(inp);
+			//~ if ((c<1)||(c>4)) {
+				//~ cout<<"\nInvalid selection.\n\n";            
+				//~ system("PAUSE");
+				//~ turn--;
+				//~ continue;
+			//~ }
+			//~ if (adj[g][r][c]!=0) {
+				//~ cout<<"\nPlease select an unoccupied square!\n\n";
+				//~ system("PAUSE");turn--;continue;
+			//~ }
+		}
+		//~ cout << g<<r<<c << endl;
+		
+		if (turn%2==0){
+			adj[g][r][c]=2;
+		}
+		else {
+			adj[g][r][c]=1;
+		}
+		
+		if (checkWINNER (turn,g,r,c)) {
+			if(displayWINNER(turn)) break;
+			//~ if (turn%2==0)
+				//~ owin++;
+			//~ else 
+				//~ xwin++;
+				//~ 
+			//~ DISPLAY (&adj[0][0][0]);
+			//~ if (turn%2==0) {cout<<"\n\nO is the winner!!\n\n";}
+			//~ else cout<<"\n\nX is the winner!!\n\n";
+			//~ cout << "x: " << xwin << " o: "<< owin << endl;
+			//~ resetARRAY (); turn=0;
+		}
+		
+		
+	}
+	cout<<"\n\n\n";
+	return 0;
 }
 
 
@@ -133,15 +183,11 @@ bool checkWINNER (int turn,int g,int r,int c) {
 int normalizeINPUT (string inp) {
     int i, q; 
     string n;
-    for (int i=0;inp[i] != ' ';i++) n=n+inp[i];
+    for (int i=0;i<inp.size();i++) 
+		n=n+inp[i];
     q=atoi(n.c_str());
-    int q = -1;
-    cin >> q;
     return q;
 }
-
-        
-    
 
 void DISPLAY(int *brd)
 {
