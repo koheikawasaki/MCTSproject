@@ -363,7 +363,7 @@ void resetARRAY()
 int normalizeINPUT (string inp) {
   int i, q; 
   string n = "";
-  for (int i=0; i < inp.length() && inp[i] != ' ';i++) 
+  for (int i=0; i < inp.length();i++) 
 	n=n+inp[i];
   q=atoi(n.c_str());
   return q;
