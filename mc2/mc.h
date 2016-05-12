@@ -17,7 +17,7 @@ public:
 	MC(int player, int *brd, int s);
 	~MC();
 	
-	virtual void selection(int &i, int &j, int &k);
+	virtual void selection(int *** brd, int &i, int &j, int &k);
 	virtual int simulation(int *** brd, int i, int j, int k);
 	virtual void getAIresponse(int &i, int &j, int &k, int sample);
 	

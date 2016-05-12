@@ -24,9 +24,9 @@ MC::~MC(){
 	delete [] winrates;
 }
 
-void MC::selection(int &i, int &j, int &k){
+void MC::selection(int *** brd, int &i, int &j, int &k){
 	int *** internalboard = copyBoard(boardpt);
-	randmove(internalboard,i,j,k);
+	randmove(brd,i,j,k);
 	
 	for(int x=0;x<size;x++){
 		for(int y=0;y<size;y++){
@@ -74,8 +74,8 @@ void MC::getAIresponse(int &i, int &j, int &k, int sample){
 	
 	while(sample-- > 0){
 		int x,y,z;
-		selection(x,y,z);
 		int *** internalboard = copyBoard(boardpt);
+		selection(internalboard,x,y,z);
 		int result = simulation(internalboard,x,y,z);
 		int n = x*sz*sz+y*sz+z;
 		winrates[n] += result;
@@ -87,11 +87,14 @@ void MC::getAIresponse(int &i, int &j, int &k, int sample){
 		
 		for(x=0;x<size;x++){
 			for(y=0;y<size;y++){
-				delete internalboard[x][y];
+				if(internalboard[x][y])
+					delete internalboard[x][y];
 			}
-			delete internalboard[x];
+			if(internalboard[x])
+				delete internalboard[x];
 		}
-		delete internalboard;
+		if(internalboard)
+			delete internalboard;
 	}
 	
 	for(int a=0; a<sz*sz*sz;a++)

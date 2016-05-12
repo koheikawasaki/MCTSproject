@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iomanip>
 #include "mc.h"
+#include "imp2.h"
 
 using namespace std;
 
@@ -24,19 +25,19 @@ int main(){
 	string inp;
 	int g,r,c; 
 	resetARRAY ();
-	MC AI1(1,&adj[0][0][0],6);
+	IMP2 AI1(1,&adj[0][0][0],6);
 	MC AI2(2,&adj[0][0][0],6);
 	
          
 	while (true) {
 		turn++;
-		DISPLAY (&adj[0][0][0]);
+		//~ DISPLAY (&adj[0][0][0]);
 		if (turn%2==0){ 
-			cout<<"\nPlayer O, it's your turn!\n\n";
+			//~ cout<<"\nPlayer O, it's your turn!\n\n";
 			AI2.getAIresponse(g,r,c,1000);
 			
 		}else{ 
-			cout<<"\nPlayer X, it's your turn!\n\n";
+			//~ cout<<"\nPlayer X, it's your turn!\n\n";
 			
 			AI1.getAIresponse(g,r,c,1000);
 			
@@ -86,17 +87,17 @@ int main(){
 		}
 		
 		if (checkWINNER (turn,g,r,c)) {
-			if(displayWINNER(turn)) break;
-			//~ if (turn%2==0)
-				//~ owin++;
-			//~ else 
-				//~ xwin++;
-				//~ 
+			//~ if(displayWINNER(turn)) break;
+			if (turn%2==0)
+				owin++;
+			else 
+				xwin++;
+				
 			//~ DISPLAY (&adj[0][0][0]);
 			//~ if (turn%2==0) {cout<<"\n\nO is the winner!!\n\n";}
 			//~ else cout<<"\n\nX is the winner!!\n\n";
-			//~ cout << "x: " << xwin << " o: "<< owin << endl;
-			//~ resetARRAY (); turn=0;
+			cout << "x: " << xwin << " o: "<< owin << endl;
+			resetARRAY (); turn=0;
 		}
 		
 		
