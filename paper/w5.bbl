@@ -1,0 +1,56 @@
+\begin{thebibliography}{10}
+
+\bibitem{abramson1990expected}
+Bruce Abramson.
+\newblock Expected-outcome: A general model of static evaluation.
+\newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions
+  on}, 12(2):182--193, 1990.
+
+\bibitem{bouzy2004monte}
+Bruno Bouzy and Bernard Helmstetter.
+\newblock Monte-carlo go developments.
+\newblock In {\em Advances in computer games}, pages 159--174. Springer, 2004.
+
+\bibitem{brugmann1993monte}
+Bernd Br{\"u}gmann.
+\newblock Monte carlo go.
+\newblock Technical report, Citeseer, 1993.
+
+\bibitem{cazenave2008parallel}
+Tristan Cazenave and Nicolas Jouandeau.
+\newblock A parallel monte-carlo tree search algorithm.
+\newblock In {\em Computers and Games}, pages 72--80. Springer, 2008.
+
+\bibitem{chaslot2006monte}
+GMJB Chaslot, Jahn-Takeshi Saito, Bruno Bouzy, JWHM Uiterwijk, and H~Jaap Van
+  Den~Herik.
+\newblock Monte-carlo strategies for computer go.
+\newblock In {\em Proceedings of the 18th BeNeLux Conference on Artificial
+  Intelligence, Namur, Belgium}, pages 83--91, 2006.
+
+\bibitem{chaslot2008monte}
+Guillaume Chaslot, Sander Bakkes, Istvan Szita, and Pieter Spronck.
+\newblock Monte-carlo tree search: A new framework for game ai.
+\newblock In {\em AIIDE}, 2008.
+
+\bibitem{chaslot2008parallel}
+Guillaume MJ-B Chaslot, Mark~HM Winands, and H~Jaap van Den~Herik.
+\newblock Parallel monte-carlo tree search.
+\newblock In {\em Computers and Games}, pages 60--71. Springer, 2008.
+
+\bibitem{coulom2006efficient}
+R{\'e}mi Coulom.
+\newblock Efficient selectivity and backup operators in monte-carlo tree
+  search.
+\newblock In {\em Computers and games}, pages 72--83. Springer, 2006.
+
+\bibitem{fumodel}
+Justin Fu and Irving Hsu.
+\newblock Model-based reinforcement learning for playing atari games.
+
+\bibitem{kocsis2006bandit}
+Levente Kocsis and Csaba Szepesv{\'a}ri.
+\newblock Bandit based monte-carlo planning.
+\newblock In {\em Machine Learning: ECML 2006}, pages 282--293. Springer, 2006.
+
+\end{thebibliography}
