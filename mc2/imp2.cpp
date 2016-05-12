@@ -56,9 +56,9 @@ void IMP2::selection(int*** brd, int &i, int &j, int &k){
 		int x,y,z;
 		MC::randmove(brd,x,y,z);
 		
-		int a = (x-1)*s*s + (y-1)*s + (z-1);
-		if(abs(point-arr[a]) < distance){
-			distance = abs(point-arr[a]);
+		int n = (x-1)*s*s + (y-1)*s + (z-1);
+		if(abs(point-arr[n]) < distance){
+			distance = abs(point-arr[n]);
 			i=x;
 			j=y;
 			k=z;
