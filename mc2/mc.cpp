@@ -87,14 +87,11 @@ void MC::getAIresponse(int &i, int &j, int &k, int sample){
 		
 		for(x=0;x<size;x++){
 			for(y=0;y<size;y++){
-				if(internalboard[x][y])
-					delete internalboard[x][y];
+				delete internalboard[x][y];
 			}
-			if(internalboard[x])
-				delete internalboard[x];
+			delete internalboard[x];
 		}
-		if(internalboard)
-			delete internalboard;
+		delete internalboard;
 	}
 	
 	for(int a=0; a<sz*sz*sz;a++)
@@ -112,8 +109,8 @@ int*** MC::copyBoard(int *board)
 		for(int j=0;j<size;j++) {
 			array3D[i][j] = new int[size];
 			for(int k=0;k<size;k++) {
-				int n = i*size*size + j*size + k;
-				array3D[i][j][k] = *(board+n);
+				int n=((i*36)+(j*6)+(k));
+				array3D[i][j][k] = (int)*(board+n);
 			}
 		}
 	}
@@ -133,11 +130,13 @@ bool MC::fullboard(int ***brd){
 }
 
 void MC::randmove(int ***brd,int &i,int &j,int &k){
+	int x,y,z;
 	do{
-		i = rand()%sz + 1;
-		j = rand()%sz + 1;
-		k = rand()%sz + 1;
-	}while( brd[i][j][k] != 0);
+		x = rand()%sz + 1;
+		y = rand()%sz + 1;
+		z = rand()%sz + 1;
+	}while( brd[x][y][z] != 0);
+	i=x; j=y; k=z;
 }
 
 bool MC::win(int turn, int*** brd, int i, int j, int k){

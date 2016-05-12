@@ -25,7 +25,7 @@ int main(){
 	string inp;
 	int g,r,c; 
 	resetARRAY ();
-	IMP2 AI1(1,&adj[0][0][0],6);
+	MC AI1(1,&adj[0][0][0],6);
 	MC AI2(2,&adj[0][0][0],6);
 	
          
