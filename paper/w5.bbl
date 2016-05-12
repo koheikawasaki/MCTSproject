@@ -1,4 +1,4 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{1}
 
 \bibitem{abramson1990expected}
 Bruce Abramson.
@@ -33,20 +33,11 @@ Guillaume Chaslot, Sander Bakkes, Istvan Szita, and Pieter Spronck.
 \newblock Monte-carlo tree search: A new framework for game ai.
 \newblock In {\em AIIDE}, 2008.
 
-\bibitem{chaslot2008parallel}
-Guillaume MJ-B Chaslot, Mark~HM Winands, and H~Jaap van Den~Herik.
-\newblock Parallel monte-carlo tree search.
-\newblock In {\em Computers and Games}, pages 60--71. Springer, 2008.
-
 \bibitem{coulom2006efficient}
 R{\'e}mi Coulom.
 \newblock Efficient selectivity and backup operators in monte-carlo tree
   search.
 \newblock In {\em Computers and games}, pages 72--83. Springer, 2006.
-
-\bibitem{fumodel}
-Justin Fu and Irving Hsu.
-\newblock Model-based reinforcement learning for playing atari games.
 
 \bibitem{kocsis2006bandit}
 Levente Kocsis and Csaba Szepesv{\'a}ri.

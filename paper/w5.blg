@@ -3,51 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: w5.aux
 The style file: plain.bst
 Database file #1: w5.bib
-Repeated entry---line 71 of file w5.bib
- : @incollection{chaslot2008parallel
- :                                  ,
-I'm skipping whatever remains of this entry
-Warning--empty journal in fumodel
-Warning--empty year in fumodel
-You've used 10 entries,
+You've used 8 entries,
             2118 wiz_defined-function locations,
-            549 strings with 5336 characters,
-and the built_in function-call counts, 3803 in all, are:
-= -- 392
-> -- 142
-< -- 6
-+ -- 57
-- -- 46
-* -- 223
-:= -- 591
-add.period$ -- 34
-call.type$ -- 10
-change.case$ -- 54
+            542 strings with 5118 characters,
+and the built_in function-call counts, 3107 in all, are:
+= -- 323
+> -- 111
+< -- 5
++ -- 45
+- -- 36
+* -- 180
+:= -- 479
+add.period$ -- 28
+call.type$ -- 8
+change.case$ -- 43
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 178
-empty$ -- 322
-format.name$ -- 46
-if$ -- 849
+cite$ -- 8
+duplicate$ -- 146
+empty$ -- 267
+format.name$ -- 36
+if$ -- 698
 int.to.chr$ -- 0
-int.to.str$ -- 10
-missing$ -- 9
-newline$ -- 52
-num.names$ -- 20
-pop$ -- 76
+int.to.str$ -- 8
+missing$ -- 7
+newline$ -- 43
+num.names$ -- 16
+pop$ -- 58
 preamble$ -- 1
-purify$ -- 43
+purify$ -- 34
 quote$ -- 0
-skip$ -- 126
+skip$ -- 105
 stack$ -- 0
-substring$ -- 236
-swap$ -- 56
-text.length$ -- 6
+substring$ -- 202
+swap$ -- 48
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 40
-warning$ -- 2
-while$ -- 40
-width$ -- 12
-write$ -- 112
-(There was 1 error message)
+type$ -- 32
+warning$ -- 0
+while$ -- 33
+width$ -- 9
+write$ -- 93
