@@ -5,6 +5,8 @@
 #include <iomanip>
 #include "mc.h"
 #include "imp2.h"
+#include "imp5.h"
+#include "imp6.h"
 
 using namespace std;
 
@@ -25,8 +27,8 @@ int main(){
 	string inp;
 	int g,r,c; 
 	resetARRAY ();
-	MC AI1(1,&adj[0][0][0],6);
-	MC AI2(2,&adj[0][0][0],6);
+	IMP6 AI1(1,&adj[0][0][0],6); //Player X
+	IMP5 AI2(2,&adj[0][0][0],6); //Player O
 	
          
 	while (true) {

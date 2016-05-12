@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void IMP2::selection(int*** brd, int &i, int &j, int &k){
+void IMP2::selection(int*brd, int &i, int &j, int &k){
 	int s = size -2;
 	srand(time(NULL));
 	int max = numeric_limits<int>::min();
@@ -52,13 +52,14 @@ void IMP2::selection(int*** brd, int &i, int &j, int &k){
 		//~ }
 	//~ }
 	
-	for(int a=0;a<64*2;a++){
+	for(int a=0;a<100;a++){
 		int x,y,z;
 		MC::randmove(brd,x,y,z);
 		
 		int a = (x-1)*s*s + (y-1)*s + (z-1);
-		if(abs(point-arr[a]) < distance){
-			distance = abs(point-arr[a]);
+		int d = abs(point-arr[a]);
+		if( d < distance){
+			distance = d;
 			i=x;
 			j=y;
 			k=z;

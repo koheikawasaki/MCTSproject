@@ -18,32 +18,25 @@ MC::MC(int p, int* brd, int s){
 	player = p;
 	boardpt = brd;
 	winrates = new int[sz*sz*sz];
+	internalboard = new int[size*size*size];
 }
 
 MC::~MC(){
 	delete [] winrates;
+	delete [] internalboard;
 }
 
-void MC::selection(int *** brd, int &i, int &j, int &k){
-	int *** internalboard = copyBoard(boardpt);
+void MC::selection(int * brd, int &i, int &j, int &k){
 	randmove(brd,i,j,k);
-	
-	for(int x=0;x<size;x++){
-		for(int y=0;y<size;y++){
-			delete internalboard[x][y];
-		}
-		delete internalboard[x];
-	}
-	delete internalboard;
 }
 
-int MC::simulation(int *** brd, int i, int j, int k){
+int MC::simulation(int * brd, int i, int j, int k){
 	srand(time(0));
 	int bp = 0;
 	int turn = player;
 	bool winner = false;
 	
-	brd[i][j][k] = turn;
+	brd[addr(i,j,k)] = turn;
 	if(win(player,brd,i,j,k))
 		return 1;
 		
@@ -55,7 +48,7 @@ int MC::simulation(int *** brd, int i, int j, int k){
 		
 		int x,y,z;
 		randmove(brd,x,y,z);
-		brd[x][y][z] = turn;
+		brd[addr(x,y,z)] = turn;
 		
 		if(win(turn,brd,i,j,k)){
 			winner = true;
@@ -74,7 +67,7 @@ void MC::getAIresponse(int &i, int &j, int &k, int sample){
 	
 	while(sample-- > 0){
 		int x,y,z;
-		int *** internalboard = copyBoard(boardpt);
+		copyBoard(boardpt);
 		selection(internalboard,x,y,z);
 		int result = simulation(internalboard,x,y,z);
 		int n = x*sz*sz+y*sz+z;
@@ -85,13 +78,6 @@ void MC::getAIresponse(int &i, int &j, int &k, int sample){
 		}
 		
 		
-		for(x=0;x<size;x++){
-			for(y=0;y<size;y++){
-				delete internalboard[x][y];
-			}
-			delete internalboard[x];
-		}
-		delete internalboard;
 	}
 	
 	for(int a=0; a<sz*sz*sz;a++)
@@ -100,28 +86,23 @@ void MC::getAIresponse(int &i, int &j, int &k, int sample){
 
 //helpers
 
-int*** MC::copyBoard(int *board)
+void MC::copyBoard(int *board)
 {
-	int*** array3D;
-	array3D = new int**[size];
 	for(int i=0;i<size;i++) {
-		array3D[i] = new int*[size];
 		for(int j=0;j<size;j++) {
-			array3D[i][j] = new int[size];
 			for(int k=0;k<size;k++) {
-				int n=((i*36)+(j*6)+(k));
-				array3D[i][j][k] = (int)*(board+n);
+				int n = i*size*size + j*size + k;
+				internalboard[n] = *(board+n);
 			}
 		}
 	}
-	return array3D;
 }
 
-bool MC::fullboard(int ***brd){
+bool MC::fullboard(int *brd){
 	for(int i=1;i<sz+1;i++) {
 		for(int j=1;j<sz+1;j++) {
 			for(int k=1;k<sz+1;k++) {
-				if(brd[i][j][k] == 0)
+				if(brd[addr(i,j,k)] == 0)
 					return false;
 			}
 		}
@@ -129,17 +110,17 @@ bool MC::fullboard(int ***brd){
 	return true;
 }
 
-void MC::randmove(int ***brd,int &i,int &j,int &k){
+void MC::randmove(int *brd,int &i,int &j,int &k){
 	int x,y,z;
 	do{
 		x = rand()%sz + 1;
 		y = rand()%sz + 1;
 		z = rand()%sz + 1;
-	}while( brd[x][y][z] != 0);
+	}while( brd[addr(x,y,z)] != 0);
 	i=x; j=y; k=z;
 }
 
-bool MC::win(int turn, int*** brd, int i, int j, int k){
+bool MC::win(int turn, int* brd, int i, int j, int k){
 	int sum = -1;
 	for (int x=0;x<2;x++)
 		for (int y=0;y<2;y++)
@@ -155,10 +136,14 @@ bool MC::win(int turn, int*** brd, int i, int j, int k){
 	return false;
 }
 
-int MC::checker(int turn, int*** brd, int i, int j, int k, int id, int jd, int kd){
+int MC::checker(int turn, int* brd, int i, int j, int k, int id, int jd, int kd){
 	
-	if (brd[i][j][k] == 5 || brd[i][j][k] != turn)
+	if (brd[addr(i,j,k)] == 5 || brd[addr(i,j,k)] != turn)
 		return 0;
 		
 	return 1 + checker(turn,brd,i+id,j+jd,k+kd,id,jd,kd);
+}
+
+int MC::addr(int i,int j,int k){
+	return i*size*size+j*size+k;
 }

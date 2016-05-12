@@ -1,8 +1,8 @@
-#ifndef IMP2_H
-#define IMP2_H
+#ifndef IMP5V2_H
+#define IMP5V2_H
 
-#include "mc.h"
-class IMP2 : public MC
+#include "imp2"
+class IMP5V2 : public IMP2
 {
 protected:
 
