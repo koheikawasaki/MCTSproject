@@ -27,8 +27,8 @@ int main(){
 	string inp;
 	int g,r,c; 
 	resetARRAY ();
-	IMP6 AI1(1,&adj[0][0][0],6); //Player X
-	IMP5 AI2(2,&adj[0][0][0],6); //Player O
+    IMP5 AI1(1,&adj[0][0][0],6); //Player X
+    IMP6 AI2(2,&adj[0][0][0],6); //Player O
 	
          
 	while (true) {
@@ -95,9 +95,9 @@ int main(){
 			else 
 				xwin++;
 				
-			//~ DISPLAY (&adj[0][0][0]);
-			//~ if (turn%2==0) {cout<<"\n\nO is the winner!!\n\n";}
-			//~ else cout<<"\n\nX is the winner!!\n\n";
+			DISPLAY (&adj[0][0][0]);
+			if (turn%2==0) {cout<<"\n\nO is the winner!!\n\n";}
+			else cout<<"\n\nX is the winner!!\n\n";
 			cout << "x: " << xwin << " o: "<< owin << endl;
 			resetARRAY (); turn=0;
 		}
