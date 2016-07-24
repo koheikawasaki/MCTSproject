@@ -3,9 +3,12 @@
 #include <string>
 #include <cstring>
 #include <iomanip>
-
+#include "mc.h"
+#include "imp2.h"
+#include "imp5.h"
+#include "imp6.h"
 using namespace std;
-const int sideLength = 3;
+const int sideLength = 4;
 const int SampleN = 3000;
 const int SIZE = sideLength + 2;
 const int WALL = sideLength + 1;
@@ -44,36 +47,37 @@ int main(){
   string inp;
   int g,r,c;
   resetARRAY();
-
+  IMP5 AI2(2,&adj[0][0][0],6); 
   while(1) {
     turn++;
     display(&adj[0][0][0]);
-    if(turn%2 == 1) //odd for player
+        if(turn%2 == 1) //odd for player
       {
-	cout << "\nPlayer, it's your turn!\n\n";
-	cout<<"Enter grid number ('Q' to Quit) : ";
-	getline (cin,inp);
-	if ((inp[0]=='q')||(inp[0]=='Q')) break;
-	g=normalizeINPUT(inp);
-	if ((g<1)||(g>4)) {cout<<"\nInvalid selection.\n\n";            
-	  turn--;continue;}
+        AI2.getAIresponse(g,r,c,1000);
+  // cout << "\nPlayer, it's your turn!\n\n";
+  // cout<<"Enter grid number ('Q' to Quit) : ";
+  // getline (cin,inp);
+  // if ((inp[0]=='q')||(inp[0]=='Q')) break;
+  // g=normalizeINPUT(inp);
+  // if ((g<1)||(g>4)) {cout<<"\nInvalid selection.\n\n";            
+  //   turn--;continue;}
                        
-	cout<<"Row number : ";
-	getline (cin,inp);
-	r=normalizeINPUT(inp);
-	if ((r<1)||(r>4)) {
-	  cout<<"\nInvalid selection.\n\n";            
-	  turn--;
-	  continue;
-	}    
-	cout<<"Column number : ";
-	getline (cin,inp);
-	c=normalizeINPUT(inp);
-	if ((c<1)||(c>4)) {
-	  cout<<"\nInvalid selection.\n\n";            
-	  turn--;
-	  continue;
-	}
+  // cout<<"Row number : ";
+  // getline (cin,inp);
+  // r=normalizeINPUT(inp);
+  // if ((r<1)||(r>4)) {
+  //   cout<<"\nInvalid selection.\n\n";            
+  //   turn--;
+  //   continue;
+  // }    
+  // cout<<"Column number : ";
+  // getline (cin,inp);
+  // c=normalizeINPUT(inp);
+  // if ((c<1)||(c>4)) {
+  //   cout<<"\nInvalid selection.\n\n";            
+  //   turn--;
+  //   continue;
+  // }
       }
     else // even for ai
       {

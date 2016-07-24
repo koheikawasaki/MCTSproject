@@ -16,11 +16,6 @@ Bernd Br{\"u}gmann.
 \newblock Monte carlo go.
 \newblock Technical report, Citeseer, 1993.
 
-\bibitem{cazenave2008parallel}
-Tristan Cazenave and Nicolas Jouandeau.
-\newblock A parallel monte-carlo tree search algorithm.
-\newblock In {\em Computers and Games}, pages 72--80. Springer, 2008.
-
 \bibitem{chaslot2006monte}
 GMJB Chaslot, Jahn-Takeshi Saito, Bruno Bouzy, JWHM Uiterwijk, and H~Jaap Van
   Den~Herik.
@@ -33,6 +28,11 @@ Guillaume Chaslot, Sander Bakkes, Istvan Szita, and Pieter Spronck.
 \newblock Monte-carlo tree search: A new framework for game ai.
 \newblock In {\em AIIDE}, 2008.
 
+\bibitem{chaslot2008parallel}
+Guillaume MJ-B Chaslot, Mark~HM Winands, and H~Jaap van Den~Herik.
+\newblock Parallel monte-carlo tree search.
+\newblock In {\em Computers and Games}, pages 60--71. Springer, 2008.
+
 \bibitem{coulom2006efficient}
 R{\'e}mi Coulom.
 \newblock Efficient selectivity and backup operators in monte-carlo tree
@@ -43,5 +43,12 @@ R{\'e}mi Coulom.
 Levente Kocsis and Csaba Szepesv{\'a}ri.
 \newblock Bandit based monte-carlo planning.
 \newblock In {\em Machine Learning: ECML 2006}, pages 282--293. Springer, 2006.
+
+\bibitem{silver2016mastering}
+David Silver, Aja Huang, Chris~J Maddison, Arthur Guez, Laurent Sifre, George
+  Van Den~Driessche, Julian Schrittwieser, Ioannis Antonoglou, Veda
+  Panneershelvam, Marc Lanctot, et~al.
+\newblock Mastering the game of go with deep neural networks and tree search.
+\newblock {\em Nature}, 529(7587):484--489, 2016.
 
 \end{thebibliography}

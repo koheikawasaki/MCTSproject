@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex w5"] 1463025554 "w5.aux" "w5.bbl" "w5" 1463025555
+["bibtex w5"] 1463035815 "w5.aux" "w5.bbl" "w5" 1463035815
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "w5.aux" 1463025555 1366 fbb25f117fd33ada23f55d408eab2533 ""
+  "w5.aux" 1463035815 1912 5138f7089c0b2d4b57fb8ee73da70e12 ""
   "w5.bcf" 0 -1 0 ""
-  "w5.bib" 1461811340 4955 446280a7f0240857c68e34841785ec67 ""
+  "w5.bib" 1463027747 5423 25e52dfe05d24ca8f80d9645e5230fe7 ""
   (generated)
-  "w5.blg"
   "w5.bbl"
-["pdflatex"] 1463025555 "w5.tex" "w5.pdf" "w5" 1463025555
+  "w5.blg"
+["pdflatex"] 1463035815 "w5.tex" "w5.pdf" "w5" 1463035815
   "/usr/local/texlive/2015/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -69,10 +69,10 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1454054203 3849859 939a4e220347a2cb09f0b6b5060e9e2f ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "w5.aux" 1463025555 1366 fbb25f117fd33ada23f55d408eab2533 ""
-  "w5.bbl" 1463025555 1651 29756a8446af1033fc9048335329468d "bibtex w5"
-  "w5.tex" 1463025553 13472 99763da672e3291edcaee4d3ff5d93cb ""
+  "w5.aux" 1463030686 1955 f3cffe331140d8113bfae45f92d4f41e ""
+  "w5.bbl" 1463030614 2009 2a8af66e8dce4213c5a44e2a35f7722c "bibtex w5"
+  "w5.tex" 1463035803 20713 cbd737633e091486aaeeed21e2545ffa ""
   (generated)
   "w5.aux"
-  "w5.pdf"
   "w5.log"
+  "w5.pdf"

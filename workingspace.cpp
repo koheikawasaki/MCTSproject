@@ -22,13 +22,13 @@ int turn, adj[6][6][6];
 int main(){
 	int xwin = 0;
 	int owin = 0;
-	
+
 	cout << turn << endl;
 	string inp;
 	int g,r,c; 
 	resetARRAY ();
-	IMP6 AI1(1,&adj[0][0][0],6); //Player X
-	IMP5 AI2(2,&adj[0][0][0],6); //Player O
+    MC AI1(1,&adj[0][0][0],6); //Player X
+    IMP6 AI2(2,&adj[0][0][0],6); //Player O
 	
          
 	while (true) {
@@ -36,7 +36,9 @@ int main(){
 		//~ DISPLAY (&adj[0][0][0]);
 		if (turn%2==0){ 
 			//~ cout<<"\nPlayer O, it's your turn!\n\n";
+
 			AI2.getAIresponse(g,r,c,1000);
+  
 			
 		}else{ 
 			//~ cout<<"\nPlayer X, it's your turn!\n\n";
@@ -87,7 +89,7 @@ int main(){
 		else {
 			adj[g][r][c]=1;
 		}
-		
+		DISPLAY (&adj[0][0][0]);
 		if (checkWINNER (turn,g,r,c)) {
 			//~ if(displayWINNER(turn)) break;
 			if (turn%2==0)
@@ -95,9 +97,9 @@ int main(){
 			else 
 				xwin++;
 				
-			//~ DISPLAY (&adj[0][0][0]);
-			//~ if (turn%2==0) {cout<<"\n\nO is the winner!!\n\n";}
-			//~ else cout<<"\n\nX is the winner!!\n\n";
+			DISPLAY (&adj[0][0][0]);
+			if (turn%2==0) {cout<<"\n\nO is the winner!!\n\n";}
+			else cout<<"\n\nX is the winner!!\n\n";
 			cout << "x: " << xwin << " o: "<< owin << endl;
 			resetARRAY (); turn=0;
 		}

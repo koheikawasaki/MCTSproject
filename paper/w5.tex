@@ -83,23 +83,53 @@ where, \[D_{m}(S) = N(V_{m}, \frac{\sigma}{\sqrt n}) \]
 In the second back propagation part, their strategy returns the value relying of standard deviation of the move m to the value of move m. the Min-Max values measured by all child node in a max of random number, so it is overestimated in a sence. To avoid this error, the value returned by the 
 \(U_{m}(O_{bj})\) represent the urgency of the a move, the value estimated by the back propagation strategy should be close to the average value of the child node in the beginning of the experiments.
 As a consequence it does not require any evaluation function in the usage of this selection strategy and the backpropagation strategy. Therefore, this is applicable to any game where it is difficult or impossible  to create an evaluation function without parameter tuning.
+\section{Concise description of approach to solve problem}
+The problem to solve is to find the most reliable monte carlo variant. Four candidates were put head to head to find the most viable candidate. These four candidates rose from ideas of defense, offense, and a combination of both. To facilitate a better illustration of how the modifications were made, the AI was written in an object oriented format. Each variant extends from the vanilla monte carlo search or one of its other children, ensuring that the variants can be traced back to have insights on what inspired the design or what went into making the variant how was. 
+	
+The first implementation(mc) just simply statically analyse the probability of each step in a set of test. This is the basis for the rest of the other implementations and uses vanilla monte carlo to pick the actions with the most win rate. This is done by sampling the possible actions randomly, simulating the rest of the game for that action, and then updating the winrate of that action. This is done for any action that is randomly selected during selection.
 
+The second implementation(inp2) applies a learning system where the distribution of picking new moves will be adjusted to match the distribution of the last few simulations. This means that if a move had a high win rate in the last 100 simulations, this move will be more likely to be picked in the next 100 simulations. This is done by modifying the selection section of the code and making a separate list of winrates. These seperate lists would be normalized to positive values using the minimum value of the old winrates, and then squared. The range is calculated using the maximum and minimum and squared. This squared range is used to obtain a random number to which the coordinates for the squared winrate closest to it can be found. These coordinates are then selected for simulation.
 
+The third implementation(inp5) would be a full monte carlo simulation that favors the use of lookup tables. For this experiment, only one lookup will be considered and this will be the win condition of the opponent. To implement this, the selection code is modified to arbitrarily raise the winrate of the node that would prevent the opponent’s win condition. The selection code will still use the vanilla monte carlo selection, but with the modified winrates based on whether or not the opponent win condition is detected. This would appear as random into suddenly defensive gameplay.
 
-\section{Conclusion}
+The fourth implementation(inp6) would be a combination of the second and third implementations. It will incorporate the third implementation ability to detect the opponent’s win condition while still keeping track of the overall distribution of the winrates as done by implementation two. This will hopefully give a balanced effect such that the artificial intelligence would balance the notions of offense and defense.
+Experiment Description
+\section{Experiment}
+The experiments involves having these algorithms fight it out on a 3d tic tac toe board. The experiments were carried out in a consistent environment where variables were controlled. Each algorithm was put head to head against each other, resulting in 6 one on ones. These one on ones were carried out on CSE lab machines with 32gb memory and 8 core processors. To keep the performances of each algorithm against each other consistent, variables were kept constant so as to not affect the overall results. These variables were runtime, sampling size, and board size. The board sizes are kept at a four by four by four to ensure that at least one player will win the game; no ties will exist to better hash out which algorithm is better. The sampling sizes were kept at a constant 1000 so that no algorithm had the upper hand. Statistically speaking, the more samples any algorithm takes, the better its ability to evaluate the game state. Thus this was kept constant to make sure it is the ability of the algorithm that makes the algorithm better. The runtimes were kept limited as well. Since these are learning algorithms, previous experience would accumulate, to the point where one algorithm might dominate in the end game, showing not so interesting results. Rather, we kept the runtime limited to 30 seconds to ensure some randomness in the experiment. 
+\section{Results and analisys}
+As shown in the table 2, each version fight agains each others. MC is the first implementation so that as the version is getting later, it gets stronger, which was the prompt speculation. However, abobe all, inp5 was the strongest among the all versions. Moreover, inp6 was almost same as the first implementation. 
+\begin{table}
+\centering
+\caption{Match result again each version.}
+\begin{tabular}{| l || c | c |}
+\hline
+version& 1st one's win number & 2nd one's win number\\
+\hline
+mc-vs-inp2 & 19 &22 \\
+mc-vs-inp5 & 12 &22\\
+mc-vs-inp6 & 17 &16\\
+inp2-vs-inp5 & 16 &22\\
+inp2-vs-inp6 & 15 &19\\
+inp5-vs-inp6 & 20 &13\\
+\hline
+   \end{tabular}
 
-\section{Future work}
+\end{table}
+
+\section{Conclusion and Future work}
+We investigated a Monte-Carlo technique called Monte-Carlo Tree Search (MCTS) in this thesis . It could be said a best-first search method implemented by the results of Monte-Carlo simulations. MCTS, described above, can be divided in four primary steps: selection, expansion, simulation, and backpropagation. The following problem statement guided our research.
+Enhancing the strategies for each MCTS step improves the playing strength of the program. We discussed that the two most crucial steps were simulation. And as the selection we implemented for different version of program described above. As the future works the following thing can be impremented 
 \subsection{UCT}
 As one of the possible attempt to the future work, Upper Confidence bound Tree search UCT could be enumerated\cite{kocsis2006bandit}.  In a MC search, evaluation of the finished random game is then used to update the statistics of all moves in the tree that were part of that game. The UCT method solves the problem of selecting moves in the tree such that important moves are searched more often than moves that appear to be bad. One way of doing this would be to select the node with the specific win rate of the time otherwise choose a random move. Whenever UCT simulation explores other moves,  adding a number to the win rate for each candidate move that goes down every time the node has been visited. From the root, UCT searches a path of moves through the tree by summing up a value for each candidate position depending on the win rate and the each node’s number of visited times. The UCT value is defined as 
 \[UCT_{value}(parent, n) = winrate + \sqrt{\frac{\ln{parent.visits}}{5*n.nodevisit}}\]
 The UCT is a commonly used selection strategy and it could be got together with Convolution Neural Network which is used for a Alpha Go\cite{silver2016mastering}. After studying Machine Learning, I would like to go back and combine of those works. 
 \subsection{Parallelize}
 To be added one thing, Parallel Monte Carlo is also works as speeding up simulation. with the advent of new hardware paradigms, implementations of Monte Carlo can take advantage of these paradigms. One paradigm that Monte Carlo is set to take advantage of is parallelism in hardware. From this, four implementations Monte Carlo Search have arisen. Of the four, the two that give insight are Leaf and Root Parallelization.\cite{chaslot2008parallel} Leaf is one way to apply parallelism to the simulation phase of MCTS. That is, multiple threads are assigned the task of carrying out simulations. This allows for multiple samples on one selection phase, giving a more accurate distribution of win rates across the search nodes. Root on the other hand seeks to parallelize from the root up. This means that full phase of MCTS are parallelized and the grand total of each search nodes are totalled up and the best action is selected based on that. 
+
 \bibliography{w5}
 \bibliographystyle{plain}
 
 \end{document}
-
 
 
 
